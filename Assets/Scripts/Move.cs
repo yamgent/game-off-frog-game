@@ -30,7 +30,6 @@ public class Move : MonoBehaviour
             if (timer > jumpTime) {
                 isMoving = false;
                 timer = 0;
-                Debug.Log(startPosition + "," + targetPosition + "," + transform.position);
                 startPosition = targetPosition;
             } else {
                 timer += Time.deltaTime;
@@ -55,12 +54,12 @@ public class Move : MonoBehaviour
     private void selectSprite(float time) {
         if (time >= 1) {
             animator.SetBool("Jumping", false);
-        } else if (time > 0.75f) {
+        } else if (time > 0.9f) {
             animator.SetBool("Jumping", true);
             animator.SetBool("FullJump", false);
-        } else if (time > 0.5f) {
+        } else if (time > 0.2f) {
             animator.SetBool("FullJump", true);
-        } else if (time > 0.25f) {
+        } else if (time > 0.1f) {
             animator.SetBool("Jumping", true);
             animator.SetBool("FullJump", false);
         } else {
