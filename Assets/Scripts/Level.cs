@@ -9,6 +9,7 @@ public class Level : MonoBehaviour
 
     private Grid levelGrid;
     private Tilemap lilypadTilemap;
+    private int totalLanes = 3;
 
     void Start() {
         if (singleton != null) {
@@ -44,6 +45,10 @@ public class Level : MonoBehaviour
     public Vector3 GetLilypadOriginWorldCoordinate(int row, int lane) {
         return levelGrid.CellToWorld(new Vector3Int(lane, row, 0))
             + new Vector3(0.5f, 0.5f, 0.0f);
+    }
+
+    public int GetTotalLanes() {
+        return totalLanes;
     }
 
     /*
