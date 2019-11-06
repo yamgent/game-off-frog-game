@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class InputListener : MonoBehaviour {
@@ -24,6 +23,11 @@ public class InputListener : MonoBehaviour {
                     frog.move(1, 1);
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R)) {
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
         }
     }
 }
