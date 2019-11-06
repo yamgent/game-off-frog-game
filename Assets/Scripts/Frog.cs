@@ -2,30 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public class Frog : MonoBehaviour
 {
     public float jumpTime;
 
-    private bool isMoving;
     private float timer;
     private Vector2 startPosition;
     private Vector2 targetPosition;
 
+    public bool isMoving { get; private set; }
+    public bool isDead { get; private set; }
+    public int currentRow { get; private set; }
+    public int currentCol { get; private set; }
+
     private Animator animator;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         isMoving = false;
+        isDead = false;
         timer = 0;
         startPosition = transform.position;
+
+        currentRow = 0;
+        currentCol = 2;
 
         animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (isMoving) {
             if (timer > jumpTime) {
                 isMoving = false;
@@ -37,18 +43,18 @@ public class Move : MonoBehaviour
                 transform.position = Vector2.Lerp(startPosition, targetPosition, time);
                 selectSprite(time);
             }
-        } else {
-            if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                targetPosition = transform.position + new Vector3(0, 2, 0);
-                isMoving = true;
-            } else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-                targetPosition = transform.position + new Vector3(-2, 2, 0);
-                isMoving = true;
-            } else if (Input.GetKeyDown(KeyCode.RightArrow)) {
-                targetPosition = transform.position + new Vector3(2, 2, 0);
-                isMoving = true;
-            }
         }
+    }
+
+    public void move(int rowBy, int colBy) {
+        currentRow += rowBy;
+        currentCol += colBy;
+
+        if (!Level.GetSingleton().HasLilypadAt(currentRow, currentCol)) {
+            isDead = true;
+        }
+        targetPosition = Level.GetSingleton().GetLilypadOriginWorldCoordinate(currentRow, currentCol);
+        isMoving = true;
     }
 
     private void selectSprite(float time) {
