@@ -37,6 +37,9 @@ public class Frog : MonoBehaviour
                 isMoving = false;
                 timer = 0;
                 startPosition = targetPosition;
+                if (isDead) {
+                    
+                }
             } else {
                 timer += Time.deltaTime;
                 float time = Mathf.Min(1, timer / jumpTime);
@@ -55,6 +58,7 @@ public class Frog : MonoBehaviour
         }
         targetPosition = Level.GetSingleton().GetLilypadOriginWorldCoordinate(currentRow, currentCol);
         isMoving = true;
+        Level.GetSingleton().UpdateFrogPosition(currentRow);
     }
 
     private void selectSprite(float time) {

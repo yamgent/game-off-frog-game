@@ -10,8 +10,11 @@ public class Level : MonoBehaviour
     private Grid levelGrid;
     private Tilemap lilypadTilemap;
     private int totalLanes = 3;
+    private int firstGeneratedIndex = 0;
+    private int lastGeneratedIndex = 6;
 
     public TileBase lilypadTile;
+    public int lilypadBuffer = 10;
 
     void Start() {
         if (singleton != null) {
@@ -36,6 +39,8 @@ public class Level : MonoBehaviour
         }
 
         // TestStuff();
+        GenerateRows(lastGeneratedIndex + 1, 20);
+        lastGeneratedIndex = 20;
     }
 
     public static Level GetSingleton() {
@@ -106,6 +111,20 @@ public class Level : MonoBehaviour
                 continue;
             }
             DeleteLilypad(row, lane);
+        }
+    }
+
+    public void UpdateFrogPosition(int row) {
+        if (row + lilypadBuffer >= lastGeneratedIndex) {
+            int generateTo = lastGeneratedIndex + lilypadBuffer;
+            GenerateRows(lastGeneratedIndex + 1, generateTo);
+            lastGeneratedIndex = generateTo;
+        }
+
+        if (row - (2 * lilypadBuffer) > firstGeneratedIndex) {
+            int removeTo = firstGeneratedIndex + lilypadBuffer;
+            DeleteRows(firstGeneratedIndex, removeTo);
+            firstGeneratedIndex = removeTo;
         }
     }
 
