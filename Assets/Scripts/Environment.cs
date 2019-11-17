@@ -7,6 +7,7 @@ public class Environment : MonoBehaviour
     public enum BiomeType {
         Water = 0,
         Rock,
+        Sky,
         COUNT
     }
 
@@ -14,6 +15,7 @@ public class Environment : MonoBehaviour
     public const int BIOME_SIZE = 9;
 
     private int rockBiomeStartIndex;
+    private int skyBiomeStartIndex;
 
     private static Environment singleton;
 
@@ -27,6 +29,7 @@ public class Environment : MonoBehaviour
     void Start() {
         // TODO refactor the magic number out
         rockBiomeStartIndex = Random.Range(2, 3);
+        skyBiomeStartIndex = rockBiomeStartIndex + Random.Range(1, 2);
     }
 
     public static Environment GetSingleton() {
@@ -46,8 +49,10 @@ public class Environment : MonoBehaviour
         int biomeIndex = GetBiomeIndex(row);
         if (biomeIndex < rockBiomeStartIndex) {
             return BiomeType.Water;
-        } else {
+        } else if (biomeIndex < skyBiomeStartIndex) {
             return BiomeType.Rock;
+        } else {
+            return BiomeType.Sky;
         }
     }
 }

@@ -12,8 +12,10 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     public Transform bgWater;
-    public Transform bgRock;
     public Transform bgWaterToRock;
+    public Transform bgRock;
+    public Transform bgRockToSky;
+    public Transform bgSky;
 
     private Environment environmentSingleton;
 
@@ -89,31 +91,26 @@ public class Background : MonoBehaviour
                     AddSpriteForBgRow(bgRow, bgRock);
                     break;
 
+                case Environment.BiomeType.Sky:
+                    AddSpriteForBgRow(bgRow, bgSky);
+                    break;
+
                 default:
                     Debug.LogError(string.Format("Background: We did not handle '{0}'.", biome));
                     break;
             }
         } else {
-            switch (biome) {
-                case Environment.BiomeType.Water:
-                {
-                    switch (nextBiome) {
-                    case Environment.BiomeType.Rock:
-                        AddSpriteForBgRow(bgRow, bgWaterToRock);
-                    break;
+            if (biome == Environment.BiomeType.Water &&
+                nextBiome == Environment.BiomeType.Rock) {
+            
+                AddSpriteForBgRow(bgRow, bgWaterToRock);
+            } else if (biome == Environment.BiomeType.Rock &&
+                nextBiome == Environment.BiomeType.Sky) {
 
-                    default:
-                        Debug.LogError(string.Format("Background: We did not handle '{0} to {1}'.",
-                            biome, nextBiome));
-                        break;
-                    }
-                }
-                break;
-                
-                default:
-                    Debug.LogError(string.Format("Background: We did not handle '{0} to {1}'.",
-                        biome, nextBiome));
-                    break;
+                AddSpriteForBgRow(bgRow, bgRockToSky);
+            } else {
+                Debug.LogError(string.Format("Background: We did not handle '{0} to {1}'.",
+                    biome, nextBiome));
             }
         }
     }
