@@ -11,16 +11,29 @@ public class Level : MonoBehaviour
     private Tilemap lilypadTilemap;
     private int totalLanes = 3;
     private int firstGeneratedIndex = 0;
-    private int lastGeneratedIndex = 6;
+    private int lastGeneratedIndex = 0;
 
     public TileBase lilypadTile;
+    public TileBase rockTile;
+    public TileBase lilypadToRockTile;
+    public TileBase cloudTile;
     public int lilypadBuffer = 10;
 
-    void Start() {
+    private Environment environmentSingleton;
+    public Background background;
+
+    private int lastGeneratedBgRow = 0;
+    private int lastRemovedBgRow = -1;
+
+    void Awake() {
         if (singleton != null) {
             Debug.LogError("Multiple Level managers found but should only have one!");
         }
         singleton = this;
+    }
+
+    void Start() {
+        environmentSingleton = Environment.GetSingleton();
 
         levelGrid = GetComponent<Grid>();
         if (levelGrid == null) {
@@ -38,6 +51,17 @@ public class Level : MonoBehaviour
             Debug.LogError("Cannot find Lilypad tilemap layer!");
         }
 
+        if (Tutorial.GetSingleton().IsInTutorial()) {
+            foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
+                lastGeneratedIndex++;
+                AddLilypad(lastGeneratedIndex, tutorialLane);
+            }
+        }
+
+        // spawn our starting area's background
+        background.SpawnBg(0);
+        lastGeneratedBgRow = 0;
+
         // TestStuff();
         GenerateRows(lastGeneratedIndex + 1, 20);
         lastGeneratedIndex = 20;
@@ -51,13 +75,13 @@ public class Level : MonoBehaviour
         return lilypadTilemap.GetSprite(new Vector3Int(lane, row, 0)) != null;
     }
 
+    public bool IsWithinLaneBounds(int lane) {
+        return lane >= 0 && lane < totalLanes;
+    }
+
     public Vector3 GetLilypadOriginWorldCoordinate(int row, int lane) {
         return levelGrid.CellToWorld(new Vector3Int(lane, row, 0))
             + new Vector3(0.5f, 0.5f, 0.0f);
-    }
-
-    public int GetTotalLanes() {
-        return totalLanes;
     }
 
     // get the lane number of the lilypad for a particular row
@@ -72,7 +96,29 @@ public class Level : MonoBehaviour
     }
 
     private void AddLilypad(int row, int lane) {
-        lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+        Environment.BiomeType rowBiome = environmentSingleton.GetBiomeAt(row);
+
+        switch (rowBiome) {
+            case Environment.BiomeType.Sky:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), cloudTile);
+                break;
+
+            case Environment.BiomeType.Rock:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
+                break;
+
+            case Environment.BiomeType.Water:
+            default:
+                bool transitionToRock = environmentSingleton.GetBiomeAt(row + 3)
+                    != rowBiome;
+                
+                if (transitionToRock) {
+                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
+                } else {
+                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                }
+                break;
+        }
     }
 
     private void DeleteLilypad(int row, int lane) {
@@ -91,16 +137,25 @@ public class Level : MonoBehaviour
         }
 
         for (int row = startRow; row <= endRow; row++) {
-            int change = Random.Range(-1, 2);
+            int currentRowLane = lastRowLane;
 
-            bool outOfRange = lastRowLane + change < 0 || 
-                lastRowLane + change >= totalLanes;
-
-            if (!outOfRange) {
-                lastRowLane += change;
+            if (currentRowLane <= 0) {
+                currentRowLane = Random.Range(0, 2);
+            } else if (currentRowLane >= totalLanes - 1) {
+                currentRowLane = Random.Range(totalLanes - 2, totalLanes);
+            } else {
+                currentRowLane = Random.Range(currentRowLane - 1, currentRowLane + 2);
             }
 
-            AddLilypad(row, lastRowLane);
+            AddLilypad(row, currentRowLane);
+
+            int currentRowBgRow = background.GetBgRowFromFrogRow(row);
+            if (currentRowBgRow != lastGeneratedBgRow) {
+                background.SpawnBg(currentRowBgRow);
+                lastGeneratedBgRow = currentRowBgRow;
+            }
+
+            lastRowLane = currentRowLane;
         }
     }
 
@@ -111,6 +166,13 @@ public class Level : MonoBehaviour
                 continue;
             }
             DeleteLilypad(row, lane);
+
+            // the previous background will be devoid of lilypads/rocks
+            if (background.GetBgRowFromFrogRow(row + 1) > lastRemovedBgRow + 1) {
+                int previousBgRow = background.GetBgRowFromFrogRow(row) - 1;
+                background.DespawnBg(previousBgRow);
+                lastRemovedBgRow = previousBgRow;
+            }
         }
     }
 

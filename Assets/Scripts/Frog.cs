@@ -25,7 +25,7 @@ public class Frog : MonoBehaviour
         startPosition = transform.position;
 
         currentRow = 0;
-        currentCol = 2;
+        currentCol = 1;
 
         animator = GetComponent<Animator>();
     }
@@ -53,7 +53,9 @@ public class Frog : MonoBehaviour
         currentRow += rowBy;
         currentCol += colBy;
 
-        if (!Level.GetSingleton().HasLilypadAt(currentRow, currentCol)) {
+        if (Level.GetSingleton().HasLilypadAt(currentRow, currentCol)) {
+            Score.GetSingleton().AddToCurrentScore(rowBy);
+        } else {
             isDead = true;
         }
         targetPosition = Level.GetSingleton().GetLilypadOriginWorldCoordinate(currentRow, currentCol);
