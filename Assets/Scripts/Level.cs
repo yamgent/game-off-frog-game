@@ -21,6 +21,7 @@ public class Level : MonoBehaviour
     public Background background;
 
     private int lastGeneratedBgRow = 0;
+    private int lastRemovedBgRow = -1;
 
     void Awake() {
         if (singleton != null) {
@@ -149,6 +150,13 @@ public class Level : MonoBehaviour
                 continue;
             }
             DeleteLilypad(row, lane);
+
+            // the previous background will be devoid of lilypads/rocks
+            if (background.GetBgRowFromFrogRow(row + 1) > lastRemovedBgRow + 1) {
+                int previousBgRow = background.GetBgRowFromFrogRow(row) - 1;
+                background.DespawnBg(previousBgRow);
+                lastRemovedBgRow = previousBgRow;
+            }
         }
     }
 
