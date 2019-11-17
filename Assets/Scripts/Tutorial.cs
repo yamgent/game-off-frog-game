@@ -80,7 +80,7 @@ public class Tutorial : MonoBehaviour
                 buttonImage = tutorialRightButtonImage;
                 break;
             default:
-                Debug.LogError("ShowButtonHint: Unhandled tutorial button key!");
+                Debug.LogError("Tutorial#ShowButtonHint: Unhandled tutorial button key!");
                 return;
         }
         tutorialButtonsModalImage.transform.SetAsLastSibling();
