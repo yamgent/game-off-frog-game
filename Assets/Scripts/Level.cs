@@ -137,22 +137,25 @@ public class Level : MonoBehaviour
         }
 
         for (int row = startRow; row <= endRow; row++) {
-            int change = Random.Range(-1, 2);
+            int currentRowLane = lastRowLane;
 
-            bool outOfRange = lastRowLane + change < 0 || 
-                lastRowLane + change >= totalLanes;
-
-            if (!outOfRange) {
-                lastRowLane += change;
+            if (currentRowLane <= 0) {
+                currentRowLane = Random.Range(0, 2);
+            } else if (currentRowLane >= totalLanes - 1) {
+                currentRowLane = Random.Range(totalLanes - 2, totalLanes);
+            } else {
+                currentRowLane = Random.Range(currentRowLane - 1, currentRowLane + 2);
             }
 
-            AddLilypad(row, lastRowLane);
+            AddLilypad(row, currentRowLane);
 
             int currentRowBgRow = background.GetBgRowFromFrogRow(row);
             if (currentRowBgRow != lastGeneratedBgRow) {
                 background.SpawnBg(currentRowBgRow);
                 lastGeneratedBgRow = currentRowBgRow;
             }
+
+            lastRowLane = currentRowLane;
         }
     }
 
