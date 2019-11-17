@@ -38,7 +38,7 @@ public class Frog : MonoBehaviour
                 timer = 0;
                 startPosition = targetPosition;
                 if (isDead) {
-                    
+                    animator.SetTrigger("Die");
                 }
             } else {
                 timer += Time.deltaTime;
