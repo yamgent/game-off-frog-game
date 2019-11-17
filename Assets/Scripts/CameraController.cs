@@ -13,13 +13,15 @@ public class CameraController : MonoBehaviour {
     private float timer;
     private Vector3 currentMovement;
 
-    // Start is called before the first frame update
-    void Start() {
+    void Awake() {
         if (singleton != null) {
             Debug.LogError("Multiple CameraControllers found but should only have one!");
         }
         singleton = this;
+    }
 
+    // Start is called before the first frame update
+    void Start() {
         isCameraMovementEnabled = !Tutorial.GetSingleton().IsInTutorial();
         currentMovement = initialMovement;
     }
