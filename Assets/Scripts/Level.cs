@@ -17,6 +17,7 @@ public class Level : MonoBehaviour
     public TileBase rockTile;
     public TileBase lilypadToRockTile;
     public TileBase cloudTile;
+    public TileBase asteroidTile;
     public int lilypadBuffer = 10;
 
     private Environment environmentSingleton;
@@ -99,6 +100,11 @@ public class Level : MonoBehaviour
         Environment.BiomeType rowBiome = environmentSingleton.GetBiomeAt(row);
 
         switch (rowBiome) {
+            case Environment.BiomeType.Space:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), asteroidTile);
+                break;
+
+            case Environment.BiomeType.SkySpace:
             case Environment.BiomeType.Sky:
                 lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), cloudTile);
                 break;
