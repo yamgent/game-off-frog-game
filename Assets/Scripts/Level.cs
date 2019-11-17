@@ -14,13 +14,18 @@ public class Level : MonoBehaviour
     private int lastGeneratedIndex = 6;
 
     public TileBase lilypadTile;
+    public TileBase rockTile;
     public int lilypadBuffer = 10;
+
+    private Environment environmentSingleton;
 
     void Start() {
         if (singleton != null) {
             Debug.LogError("Multiple Level managers found but should only have one!");
         }
         singleton = this;
+
+        environmentSingleton = Environment.GetSingleton();
 
         levelGrid = GetComponent<Grid>();
         if (levelGrid == null) {
@@ -72,7 +77,18 @@ public class Level : MonoBehaviour
     }
 
     private void AddLilypad(int row, int lane) {
-        lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+        Environment.BiomeType rowBiome = environmentSingleton.GetBiomeAt(row);
+
+        switch (rowBiome) {
+            case Environment.BiomeType.Rock:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
+                break;
+
+            case Environment.BiomeType.Water:
+            default:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                break;
+        }
     }
 
     private void DeleteLilypad(int row, int lane) {
