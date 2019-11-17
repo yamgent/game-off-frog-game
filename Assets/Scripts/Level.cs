@@ -18,6 +18,9 @@ public class Level : MonoBehaviour
     public int lilypadBuffer = 10;
 
     private Environment environmentSingleton;
+    public Background background;
+
+    private int lastGeneratedBgRow = 0;
 
     void Awake() {
         if (singleton != null) {
@@ -51,6 +54,10 @@ public class Level : MonoBehaviour
                 AddLilypad(lastGeneratedIndex, tutorialLane);
             }
         }
+
+        // spawn our starting area's background
+        background.SpawnBg(0);
+        lastGeneratedBgRow = 0;
 
         // TestStuff();
         GenerateRows(lastGeneratedIndex + 1, 20);
@@ -126,6 +133,12 @@ public class Level : MonoBehaviour
             }
 
             AddLilypad(row, lastRowLane);
+
+            int currentRowBgRow = background.GetBgRowFromFrogRow(row);
+            if (currentRowBgRow != lastGeneratedBgRow) {
+                background.SpawnBg(currentRowBgRow);
+                lastGeneratedBgRow = currentRowBgRow;
+            }
         }
     }
 
