@@ -48,4 +48,16 @@ public class CameraController : MonoBehaviour {
     public void StartCameraMovement() {
         isCameraMovementEnabled = true;
     }
+
+    public void StopCameraMovement() {
+        isCameraMovementEnabled = false;
+    }
+
+    public bool GetCameraMovementEnabled() {
+        return isCameraMovementEnabled;
+    }
+
+    public Vector3 GetCameraPosition() {
+        return transform.position;
+    }
 }

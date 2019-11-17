@@ -37,19 +37,19 @@ public class Frog : MonoBehaviour
                 isMoving = false;
                 timer = 0;
                 startPosition = targetPosition;
-                if (isDead) {
-                    animator.SetTrigger("Die");
-                }
             } else {
                 timer += Time.deltaTime;
                 float time = Mathf.Min(1, timer / jumpTime);
                 transform.position = Vector2.Lerp(startPosition, targetPosition, time);
-                selectSprite(time);
+                SelectSprite(time);
             }
+        } else if (isDead) {
+            animator.SetTrigger("Die");
+            CameraController.GetSingleton().StopCameraMovement();
         }
     }
 
-    public void move(int rowBy, int colBy) {
+    public void Move(int rowBy, int colBy) {
         currentRow += rowBy;
         currentCol += colBy;
 
@@ -63,7 +63,11 @@ public class Frog : MonoBehaviour
         Level.GetSingleton().UpdateFrogPosition(currentRow);
     }
 
-    private void selectSprite(float time) {
+    public void Die() {
+        isDead = true;
+    }
+
+    private void SelectSprite(float time) {
         if (time >= 1) {
             animator.SetBool("Jumping", false);
         } else if (time > 0.9f) {

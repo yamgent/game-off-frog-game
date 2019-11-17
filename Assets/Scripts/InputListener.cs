@@ -37,14 +37,14 @@ public class InputListener : MonoBehaviour {
             if (!Level.GetSingleton().HasLilypadAt(frog.currentRow + rowBy, frog.currentCol + colBy)) {
                 return;
             }
-            frog.move(rowBy, colBy);
+            frog.Move(rowBy, colBy);
             Tutorial.GetSingleton().IncrementTutorialStep();
             return;
         }
 
         // Frog can only move within the lane bounds.
         if (Level.GetSingleton().IsWithinLaneBounds(frog.currentCol + colBy)) {
-            frog.move(rowBy, colBy);
+            frog.Move(rowBy, colBy);
         }
     }
 }
