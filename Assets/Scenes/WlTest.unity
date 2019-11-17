@@ -1117,9 +1117,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgWater: {fileID: 2231021432271273266, guid: 7911170a3c234634eaae01affc9ebabe, type: 3}
-  bgRock: {fileID: 5865330762529638883, guid: b8608deb051dbd945b8f0faf520cdc90, type: 3}
   bgWaterToRock: {fileID: 2167579147422672809, guid: 508a4effdce31404891be2621b7167ef,
     type: 3}
+  bgRock: {fileID: 5865330762529638883, guid: b8608deb051dbd945b8f0faf520cdc90, type: 3}
+  bgRockToSky: {fileID: 8318131585150049491, guid: 09e26c6f1fd4e9a419d750d47793424e,
+    type: 3}
+  bgSky: {fileID: 1951111709873716250, guid: 9966d28f982686c4cad67934877762f5, type: 3}
 --- !u!4 &979147119
 Transform:
   m_ObjectHideFlags: 0
@@ -1210,6 +1213,7 @@ MonoBehaviour:
   lilypadTile: {fileID: 11400000, guid: 9b15dc16f4f26ab4ca3df1c69af37b47, type: 2}
   rockTile: {fileID: 11400000, guid: aecf3f36e0970c349ab728b4cee06ba5, type: 2}
   lilypadToRockTile: {fileID: 11400000, guid: bcbd126da8a8d1c49b97915c474ef359, type: 2}
+  cloudTile: {fileID: 11400000, guid: 0d3be960fc657fb459a1ac5b5a9fd783, type: 2}
   lilypadBuffer: 10
   background: {fileID: 979147118}
 --- !u!156049354 &1962838039
