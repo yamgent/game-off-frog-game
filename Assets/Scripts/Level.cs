@@ -15,6 +15,7 @@ public class Level : MonoBehaviour
 
     public TileBase lilypadTile;
     public TileBase rockTile;
+    public TileBase lilypadToRockTile;
     public int lilypadBuffer = 10;
 
     private Environment environmentSingleton;
@@ -103,7 +104,14 @@ public class Level : MonoBehaviour
 
             case Environment.BiomeType.Water:
             default:
-                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                bool transitionToRock = environmentSingleton.GetBiomeAt(row + 3)
+                    != rowBiome;
+                
+                if (transitionToRock) {
+                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
+                } else {
+                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                }
                 break;
         }
     }
