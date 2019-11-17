@@ -22,12 +22,14 @@ public class Tutorial : MonoBehaviour
     public Image tutorialUpButtonImage;
     public Image tutorialRightButtonImage;
 
-    void Start() {
+    void Awake() {
         if (singleton != null) {
             Debug.LogError("Multiple Tutorial managers found but should only have one!");
         }
         singleton = this;
+    }
 
+    void Start() {
         if (isTutorialEnded) {
             Destroy(tutorialButtonsModalImage.gameObject);
             Destroy(tutorialLeftButtonImage.gameObject);
