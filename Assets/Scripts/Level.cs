@@ -11,7 +11,7 @@ public class Level : MonoBehaviour
     private Tilemap lilypadTilemap;
     private int totalLanes = 3;
     private int firstGeneratedIndex = 0;
-    private int lastGeneratedIndex = 6;
+    private int lastGeneratedIndex = 0;
 
     public TileBase lilypadTile;
     public int lilypadBuffer = 10;
@@ -38,6 +38,13 @@ public class Level : MonoBehaviour
             Debug.LogError("Cannot find Lilypad tilemap layer!");
         }
 
+        if (Tutorial.GetSingleton().IsInTutorial()) {
+            foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
+                lastGeneratedIndex++;
+                AddLilypad(lastGeneratedIndex, tutorialLane);
+            }
+        }
+
         // TestStuff();
         GenerateRows(lastGeneratedIndex + 1, 20);
         lastGeneratedIndex = 20;
@@ -51,13 +58,13 @@ public class Level : MonoBehaviour
         return lilypadTilemap.GetSprite(new Vector3Int(lane, row, 0)) != null;
     }
 
+    public bool IsWithinLaneBounds(int lane) {
+        return lane >= 0 && lane < totalLanes;
+    }
+
     public Vector3 GetLilypadOriginWorldCoordinate(int row, int lane) {
         return levelGrid.CellToWorld(new Vector3Int(lane, row, 0))
             + new Vector3(0.5f, 0.5f, 0.0f);
-    }
-
-    public int GetTotalLanes() {
-        return totalLanes;
     }
 
     // get the lane number of the lilypad for a particular row

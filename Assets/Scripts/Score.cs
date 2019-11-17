@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Score : MonoBehaviour {
+public class Score : MonoBehaviour
+{
     private const string SCORE_TEXT_FORMAT = "Steps:{0:D4}\nHigh:{1:D4}";
 
     private static Score singleton;

@@ -11,23 +11,40 @@ public class InputListener : MonoBehaviour {
     void Update() {
         if (!frog.isMoving && !frog.isDead) {
             if (Input.GetKeyDown(up)) {
-                frog.move(1, 0);
+                tryMoveFrog(1, 0);
             } else if (Input.GetKeyDown(left)) {
-                // Ignore user input if he goes out of bounds
-                if (frog.currentCol > 0) {
-                    frog.move(1, -1);
-                }
+                tryMoveFrog(1, -1);
             } else if (Input.GetKeyDown(right)) {
-                // Ignore user input if he goes out of bounds
-                if (frog.currentCol < Level.GetSingleton().GetTotalLanes() - 1) {
-                    frog.move(1, 1);
-                }
+                tryMoveFrog(1, 1);
             }
         }
 
         if (Input.GetKeyDown(KeyCode.R)) {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
+        }
+
+        if (Input.GetKeyDown(KeyCode.T)) {
+            Tutorial.GetSingleton().ResetTutorial();
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+        }
+    }
+
+    private void tryMoveFrog(int rowBy, int colBy) {
+        if (Tutorial.GetSingleton().IsInTutorial()) {
+            // Cannot make failure move while in tutorial.
+            if (!Level.GetSingleton().HasLilypadAt(frog.currentRow + rowBy, frog.currentCol + colBy)) {
+                return;
+            }
+            frog.move(rowBy, colBy);
+            Tutorial.GetSingleton().IncrementTutorialStep();
+            return;
+        }
+
+        // Frog can only move within the lane bounds.
+        if (Level.GetSingleton().IsWithinLaneBounds(frog.currentCol + colBy)) {
+            frog.move(rowBy, colBy);
         }
     }
 }

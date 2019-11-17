@@ -3,21 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
+    private static CameraController singleton;
 
     public Vector3 initialMovement;
     public Vector3 increaseMovement;
     public float increaseInterval;
 
+    private bool isCameraMovementEnabled;
     private float timer;
     private Vector3 currentMovement;
 
     // Start is called before the first frame update
     void Start() {
+        if (singleton != null) {
+            Debug.LogError("Multiple CameraControllers found but should only have one!");
+        }
+        singleton = this;
+
+        isCameraMovementEnabled = !Tutorial.GetSingleton().IsInTutorial();
         currentMovement = initialMovement;
     }
 
     // Update is called once per frame
     void Update() {
+        if (!isCameraMovementEnabled) {
+            return;
+        }
         transform.position += (currentMovement * Time.deltaTime);
 
         if (timer > increaseInterval) {
@@ -26,5 +37,13 @@ public class CameraController : MonoBehaviour {
         } else {
             timer += Time.deltaTime;
         }
+    }
+
+    public static CameraController GetSingleton() {
+        return singleton;
+    }
+
+    public void StartCameraMovement() {
+        isCameraMovementEnabled = true;
     }
 }
