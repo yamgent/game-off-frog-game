@@ -13,7 +13,7 @@ public class Environment : MonoBehaviour
     // See GetBiomeIndex(int) to see how this is used
     public const int BIOME_SIZE = 9;
 
-    private List<BiomeType> biomes = new List<BiomeType>();
+    private int rockBiomeStartIndex;
 
     private static Environment singleton;
 
@@ -22,6 +22,11 @@ public class Environment : MonoBehaviour
             Debug.LogError("Multiple environment managers found but should only have one!");
         }
         singleton = this;
+    }
+
+    void Start() {
+        // TODO refactor the magic number out
+        rockBiomeStartIndex = Random.Range(2, 3);
     }
 
     public static Environment GetSingleton() {
@@ -39,16 +44,10 @@ public class Environment : MonoBehaviour
     // biome for that
     public BiomeType GetBiomeAt(int row) {
         int biomeIndex = GetBiomeIndex(row);
-        while (biomeIndex >= biomes.Count) {
-            ExtendEnvironment();
+        if (biomeIndex < rockBiomeStartIndex) {
+            return BiomeType.Water;
+        } else {
+            return BiomeType.Rock;
         }
-
-        return biomes[biomeIndex];
-    }
-
-    // Extend the environment by generating a new biome
-    // and appending it to the front of the latest biome
-    public void ExtendEnvironment() {
-        biomes.Add((BiomeType)(Random.Range(0, (int)BiomeType.COUNT)));
     }
 }
