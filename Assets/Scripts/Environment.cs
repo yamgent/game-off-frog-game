@@ -11,7 +11,7 @@ public class Environment : MonoBehaviour
     }
 
     // See GetBiomeIndex(int) to see how this is used
-    public const int BIOME_SIZE = 6;
+    public const int BIOME_SIZE = 9;
 
     private List<BiomeType> biomes = new List<BiomeType>();
 

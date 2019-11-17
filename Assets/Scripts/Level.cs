@@ -15,9 +15,14 @@ public class Level : MonoBehaviour
 
     public TileBase lilypadTile;
     public TileBase rockTile;
+    public TileBase lilypadToRockTile;
     public int lilypadBuffer = 10;
 
     private Environment environmentSingleton;
+    public Background background;
+
+    private int lastGeneratedBgRow = 0;
+    private int lastRemovedBgRow = -1;
 
     void Awake() {
         if (singleton != null) {
@@ -51,6 +56,10 @@ public class Level : MonoBehaviour
                 AddLilypad(lastGeneratedIndex, tutorialLane);
             }
         }
+
+        // spawn our starting area's background
+        background.SpawnBg(0);
+        lastGeneratedBgRow = 0;
 
         // TestStuff();
         GenerateRows(lastGeneratedIndex + 1, 20);
@@ -95,7 +104,14 @@ public class Level : MonoBehaviour
 
             case Environment.BiomeType.Water:
             default:
-                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                bool transitionToRock = environmentSingleton.GetBiomeAt(row + 3)
+                    != rowBiome;
+                
+                if (transitionToRock) {
+                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
+                } else {
+                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                }
                 break;
         }
     }
@@ -126,6 +142,12 @@ public class Level : MonoBehaviour
             }
 
             AddLilypad(row, lastRowLane);
+
+            int currentRowBgRow = background.GetBgRowFromFrogRow(row);
+            if (currentRowBgRow != lastGeneratedBgRow) {
+                background.SpawnBg(currentRowBgRow);
+                lastGeneratedBgRow = currentRowBgRow;
+            }
         }
     }
 
@@ -136,6 +158,13 @@ public class Level : MonoBehaviour
                 continue;
             }
             DeleteLilypad(row, lane);
+
+            // the previous background will be devoid of lilypads/rocks
+            if (background.GetBgRowFromFrogRow(row + 1) > lastRemovedBgRow + 1) {
+                int previousBgRow = background.GetBgRowFromFrogRow(row) - 1;
+                background.DespawnBg(previousBgRow);
+                lastRemovedBgRow = previousBgRow;
+            }
         }
     }
 
