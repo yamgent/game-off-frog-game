@@ -9,16 +9,15 @@ public class Environment : MonoBehaviour
         WaterLand,
         Land,
         LandSky,
-        Sky
+        Sky,
+        SkySpace,
+        Space
     }
 
     // See GetBiomeIndex(int) to see how this is used
     public const int BIOME_SIZE = 6;
 
     public Biome[] biomes;
-
-    private int rockBiomeStartIndex;
-    private int skyBiomeStartIndex;
 
     private static Environment singleton;
 
@@ -27,12 +26,6 @@ public class Environment : MonoBehaviour
             Debug.LogError("Multiple environment managers found but should only have one!");
         }
         singleton = this;
-    }
-
-    void Start() {
-        // TODO refactor the magic number out
-        rockBiomeStartIndex = Random.Range(2, 3);
-        skyBiomeStartIndex = rockBiomeStartIndex + Random.Range(1, 2);
     }
 
     public static Environment GetSingleton() {

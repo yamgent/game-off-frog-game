@@ -12,10 +12,12 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     public Transform bgWater;
-    public Transform bgWaterToRock;
-    public Transform bgRock;
-    public Transform bgRockToSky;
+    public Transform bgWaterToLand;
+    public Transform bgLand;
+    public Transform bgLandToSky;
     public Transform bgSky;
+    public Transform bgSkyToSpace;
+    public Transform bgSpace;
 
     private Environment environmentSingleton;
 
@@ -83,19 +85,27 @@ public class Background : MonoBehaviour
                 break;
 
             case Environment.BiomeType.WaterLand:
-                AddSpriteForBgRow(bgRow, bgWaterToRock);
+                AddSpriteForBgRow(bgRow, bgWaterToLand);
                 break;
 
             case Environment.BiomeType.Land:
-                AddSpriteForBgRow(bgRow, bgRock);
+                AddSpriteForBgRow(bgRow, bgLand);
                 break;
 
             case Environment.BiomeType.LandSky:
-                AddSpriteForBgRow(bgRow, bgRockToSky);
+                AddSpriteForBgRow(bgRow, bgLandToSky);
                 break;
 
             case Environment.BiomeType.Sky:
                 AddSpriteForBgRow(bgRow, bgSky);
+                break;
+
+            case Environment.BiomeType.SkySpace:
+                AddSpriteForBgRow(bgRow, bgSkyToSpace);
+                break;
+
+            case Environment.BiomeType.Space:
+                AddSpriteForBgRow(bgRow, bgSpace);
                 break;
 
             default:
