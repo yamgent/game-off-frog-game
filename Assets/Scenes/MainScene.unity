@@ -966,7 +966,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897352241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1166,6 +1166,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4708dcf209f57ab4281b4854d1367122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  biomes:
+  - type: 0
+    repeat: 2
+  - type: 1
+    repeat: 1
+  - type: 2
+    repeat: 2
+  - type: 3
+    repeat: 1
+  - type: 4
+    repeat: 2
 --- !u!4 &1772030317
 Transform:
   m_ObjectHideFlags: 0
@@ -1174,7 +1185,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1772030315}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.9036436, y: 2.2751396, z: -64.31147}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1285,7 +1296,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136182643}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 466.51328, y: 189.0628, z: -183.94891}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

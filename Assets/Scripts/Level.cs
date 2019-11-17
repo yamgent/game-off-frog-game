@@ -103,20 +103,21 @@ public class Level : MonoBehaviour
                 lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), cloudTile);
                 break;
 
-            case Environment.BiomeType.Rock:
+            case Environment.BiomeType.LandSky:
+            case Environment.BiomeType.Land:
                 lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
                 break;
 
+            case Environment.BiomeType.WaterLand:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadToRockTile);
+                break;
+
             case Environment.BiomeType.Water:
+                lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
+                break;
+
             default:
-                bool transitionToRock = environmentSingleton.GetBiomeAt(row + 3)
-                    != rowBiome;
-                
-                if (transitionToRock) {
-                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), rockTile);
-                } else {
-                    lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), lilypadTile);
-                }
+                Debug.LogError(string.Format("Background: We did not handle '{0}'.", rowBiome));
                 break;
         }
     }

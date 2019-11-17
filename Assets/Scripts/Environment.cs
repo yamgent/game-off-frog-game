@@ -5,14 +5,17 @@ using UnityEngine;
 public class Environment : MonoBehaviour
 {
     public enum BiomeType {
-        Water = 0,
-        Rock,
-        Sky,
-        COUNT
+        Water,
+        WaterLand,
+        Land,
+        LandSky,
+        Sky
     }
 
     // See GetBiomeIndex(int) to see how this is used
-    public const int BIOME_SIZE = 9;
+    public const int BIOME_SIZE = 6;
+
+    public Biome[] biomes;
 
     private int rockBiomeStartIndex;
     private int skyBiomeStartIndex;
@@ -47,12 +50,20 @@ public class Environment : MonoBehaviour
     // biome for that
     public BiomeType GetBiomeAt(int row) {
         int biomeIndex = GetBiomeIndex(row);
-        if (biomeIndex < rockBiomeStartIndex) {
-            return BiomeType.Water;
-        } else if (biomeIndex < skyBiomeStartIndex) {
-            return BiomeType.Rock;
-        } else {
-            return BiomeType.Sky;
+        BiomeType type = BiomeType.Water;
+        for (int i = 0; i < biomes.Length; i++) {
+            biomeIndex -= biomes[i].repeat;
+            type = biomes[i].type;
+            if (biomeIndex <= 0) {
+                break;
+            }
         }
+        return type;
     }
+}
+
+[System.Serializable]
+public class Biome {
+    public Environment.BiomeType type;
+    public int repeat;
 }

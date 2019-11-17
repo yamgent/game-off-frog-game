@@ -74,44 +74,33 @@ public class Background : MonoBehaviour
         }
 
         int biomeRow = bgRow * BACKGROUND_GRAPHICS_SIZE;
-        int nextBiomeRow = biomeRow + BACKGROUND_GRAPHICS_SIZE;
 
         Environment.BiomeType biome = environmentSingleton.GetBiomeAt(biomeRow);
-        Environment.BiomeType nextBiome = environmentSingleton.GetBiomeAt(nextBiomeRow);
-        
-        bool transitionNeeded = (biome != nextBiome);
 
-        if (!transitionNeeded) {
-            switch (biome) {
-                case Environment.BiomeType.Water:
-                    AddSpriteForBgRow(bgRow, bgWater);
-                    break;
+        switch (biome) {
+            case Environment.BiomeType.Water:
+                AddSpriteForBgRow(bgRow, bgWater);
+                break;
 
-                case Environment.BiomeType.Rock:
-                    AddSpriteForBgRow(bgRow, bgRock);
-                    break;
-
-                case Environment.BiomeType.Sky:
-                    AddSpriteForBgRow(bgRow, bgSky);
-                    break;
-
-                default:
-                    Debug.LogError(string.Format("Background: We did not handle '{0}'.", biome));
-                    break;
-            }
-        } else {
-            if (biome == Environment.BiomeType.Water &&
-                nextBiome == Environment.BiomeType.Rock) {
-            
+            case Environment.BiomeType.WaterLand:
                 AddSpriteForBgRow(bgRow, bgWaterToRock);
-            } else if (biome == Environment.BiomeType.Rock &&
-                nextBiome == Environment.BiomeType.Sky) {
+                break;
 
+            case Environment.BiomeType.Land:
+                AddSpriteForBgRow(bgRow, bgRock);
+                break;
+
+            case Environment.BiomeType.LandSky:
                 AddSpriteForBgRow(bgRow, bgRockToSky);
-            } else {
-                Debug.LogError(string.Format("Background: We did not handle '{0} to {1}'.",
-                    biome, nextBiome));
-            }
+                break;
+
+            case Environment.BiomeType.Sky:
+                AddSpriteForBgRow(bgRow, bgSky);
+                break;
+
+            default:
+                Debug.LogError(string.Format("Background: We did not handle '{0}'.", biome));
+                break;
         }
     }
     
