@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Handles the background graphics of the level
+// Each background graphic spans across 6 rows
+// so:
+//  - bgRow = 0 covers frogRow = 0 to 5
+//  - bgRow = 1 covers frogRow = 6 to 11
+//  - bgRow = 2 covers frogRow = 12 to 17
+//  - etc.
 public class Background : MonoBehaviour
 {
     public Transform bgWater;
@@ -12,7 +19,7 @@ public class Background : MonoBehaviour
 
     public const int BACKGROUND_GRAPHICS_SIZE = 6;
 
-    private Dictionary<int, Transform> bgRowObject = new Dictionary<int, Transform>();
+    private Dictionary<int, Transform> bgRowSprites = new Dictionary<int, Transform>();
 
     // Start is called before the first frame update
     void Start()
@@ -20,22 +27,19 @@ public class Background : MonoBehaviour
         environmentSingleton = Environment.GetSingleton();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // Get the corresponding bgRow given the frog's row
     public int GetBgRowFromFrogRow(int frogRow) {
         return frogRow / BACKGROUND_GRAPHICS_SIZE;
     }
 
+    // Get the actual sprite's world coordinate given the bgRow
     Vector3 GetWorldPosFromBgRow(int bgRow) {
         return new Vector3(1.5f, 3.0f + (bgRow * BACKGROUND_GRAPHICS_SIZE), 0.0f);
     }
 
-    private void AddBgForBgRow(int bgRow, Transform bgPrefab) {
-        if (bgRowObject.ContainsKey(bgRow)) {
+    // Create a new bg sprite, and associate the sprite with the bgRow
+    private void AddSpriteForBgRow(int bgRow, Transform bgPrefab) {
+        if (bgRowSprites.ContainsKey(bgRow)) {
             // we already have a background for this bgRow
             return;
         }
@@ -45,26 +49,24 @@ public class Background : MonoBehaviour
             Quaternion.identity, 
             transform);
 
-        bgRowObject.Add(bgRow, bgTransform);
+        bgRowSprites.Add(bgRow, bgTransform);
     }
 
-    private void DeleteBgForBgRow(int bgRow) {
-        if (!bgRowObject.ContainsKey(bgRow)) {
+    // Delete the sprite for a corresponding bgRow
+    private void DeleteSpriteForBgRow(int bgRow) {
+        if (!bgRowSprites.ContainsKey(bgRow)) {
             // this bgRow does not exist
             return;
         }
 
-        Destroy(bgRowObject[bgRow].gameObject);
-        bgRowObject.Remove(bgRow);
+        Destroy(bgRowSprites[bgRow].gameObject);
+        bgRowSprites.Remove(bgRow);
     }
 
-    public void DespawnBg(int bgRow) {
-        DeleteBgForBgRow(bgRow);
-    }
-
+    // Spawn in the bg for a particular bgRow
     public void SpawnBg(int bgRow)
     {
-        if (bgRowObject.ContainsKey(bgRow)) {
+        if (bgRowSprites.ContainsKey(bgRow)) {
             // we already have a background for this bgRow
             return;
         }
@@ -80,11 +82,11 @@ public class Background : MonoBehaviour
         if (!transitionNeeded) {
             switch (biome) {
                 case Environment.BiomeType.Water:
-                    AddBgForBgRow(bgRow, bgWater);
+                    AddSpriteForBgRow(bgRow, bgWater);
                     break;
 
                 case Environment.BiomeType.Rock:
-                    AddBgForBgRow(bgRow, bgRock);
+                    AddSpriteForBgRow(bgRow, bgRock);
                     break;
 
                 default:
@@ -97,7 +99,7 @@ public class Background : MonoBehaviour
                 {
                     switch (nextBiome) {
                     case Environment.BiomeType.Rock:
-                        AddBgForBgRow(bgRow, bgWaterToRock);
+                        AddSpriteForBgRow(bgRow, bgWaterToRock);
                     break;
 
                     default:
@@ -114,5 +116,10 @@ public class Background : MonoBehaviour
                     break;
             }
         }
+    }
+    
+    // Delete the bg for a particular bgRow
+    public void DespawnBg(int bgRow) {
+        DeleteSpriteForBgRow(bgRow);
     }
 }
