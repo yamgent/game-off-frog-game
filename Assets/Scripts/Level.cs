@@ -19,12 +19,14 @@ public class Level : MonoBehaviour
 
     private Environment environmentSingleton;
 
-    void Start() {
+    void Awake() {
         if (singleton != null) {
             Debug.LogError("Multiple Level managers found but should only have one!");
         }
         singleton = this;
+    }
 
+    void Start() {
         environmentSingleton = Environment.GetSingleton();
 
         levelGrid = GetComponent<Grid>();

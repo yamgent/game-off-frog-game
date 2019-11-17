@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Environment
+public class Environment : MonoBehaviour
 {
     public enum BiomeType {
         Water = 0,
@@ -17,11 +17,14 @@ public class Environment
 
     private static Environment singleton;
 
-    public static Environment GetSingleton() {
-        if (singleton == null) {
-            singleton = new Environment();
+    void Awake() {
+        if (singleton != null) {
+            Debug.LogError("Multiple environment managers found but should only have one!");
         }
+        singleton = this;
+    }
 
+    public static Environment GetSingleton() {
         return singleton;
     }
 
