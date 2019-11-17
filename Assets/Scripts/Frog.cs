@@ -25,7 +25,7 @@ public class Frog : MonoBehaviour
         startPosition = transform.position;
 
         currentRow = 0;
-        currentCol = 2;
+        currentCol = 1;
 
         animator = GetComponent<Animator>();
     }
