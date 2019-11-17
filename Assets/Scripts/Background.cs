@@ -12,6 +12,8 @@ public class Background : MonoBehaviour
 
     public const int BACKGROUND_GRAPHICS_SIZE = 6;
 
+    private Dictionary<int, Transform> bgRowObject = new Dictionary<int, Transform>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,11 +35,40 @@ public class Background : MonoBehaviour
     }
 
     private void AddBgForBgRow(int bgRow, Transform bgPrefab) {
-        GameObject.Instantiate(bgPrefab, GetWorldPosFromBgRow(bgRow), Quaternion.identity);
+        if (bgRowObject.ContainsKey(bgRow)) {
+            // we already have a background for this bgRow
+            return;
+        }
+
+        Transform bgTransform = GameObject.Instantiate(bgPrefab, 
+            GetWorldPosFromBgRow(bgRow), 
+            Quaternion.identity, 
+            transform);
+
+        bgRowObject.Add(bgRow, bgTransform);
+    }
+
+    private void DeleteBgForBgRow(int bgRow) {
+        if (!bgRowObject.ContainsKey(bgRow)) {
+            // this bgRow does not exist
+            return;
+        }
+
+        Destroy(bgRowObject[bgRow].gameObject);
+        bgRowObject.Remove(bgRow);
+    }
+
+    public void DespawnBg(int bgRow) {
+        DeleteBgForBgRow(bgRow);
     }
 
     public void SpawnBg(int bgRow)
     {
+        if (bgRowObject.ContainsKey(bgRow)) {
+            // we already have a background for this bgRow
+            return;
+        }
+
         int biomeRow = bgRow * BACKGROUND_GRAPHICS_SIZE;
         int nextBiomeRow = biomeRow + BACKGROUND_GRAPHICS_SIZE;
 
