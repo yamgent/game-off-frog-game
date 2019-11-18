@@ -7,7 +7,7 @@ public class JumpTimeDecreaseItem : MonoBehaviour
     public float decreaseInSeconds;
 
     void OnTriggerEnter2D(Collider2D col) {
-        if (col.tag == "Player") {
+        if (col.CompareTag("Player")) {
             col.GetComponent<Frog>().DecreaseJumpTime(decreaseInSeconds);
             Destroy(gameObject);
         }
