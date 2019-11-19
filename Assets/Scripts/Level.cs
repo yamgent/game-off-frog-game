@@ -66,6 +66,9 @@ public class Level : MonoBehaviour
         // TestStuff();
         GenerateRows(lastGeneratedIndex + 1, 20);
         lastGeneratedIndex = 20;
+
+        /* Test items. */
+        //ItemManager.GetSingleton().CreateItemAtPosition(ItemManager.ItemType.JumpSpeedDecrease, new Vector3(1.5f, 3.5f, 0.0f));
     }
 
     public static Level GetSingleton() {

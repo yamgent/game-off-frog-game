@@ -9,6 +9,7 @@ public class Frog : MonoBehaviour
     private float timer;
     private Vector2 startPosition;
     private Vector2 targetPosition;
+    private float newJumpTime;
 
     public bool isMoving { get; private set; }
     public bool isDead { get; private set; }
@@ -23,6 +24,7 @@ public class Frog : MonoBehaviour
         isDead = false;
         timer = 0;
         startPosition = transform.position;
+        newJumpTime = jumpTime;
 
         currentRow = 0;
         currentCol = 1;
@@ -46,6 +48,8 @@ public class Frog : MonoBehaviour
         } else if (isDead) {
             animator.SetTrigger("Die");
             CameraController.GetSingleton().StopCameraMovement();
+        } else {
+            jumpTime = newJumpTime;
         }
     }
 
@@ -65,6 +69,10 @@ public class Frog : MonoBehaviour
 
     public void Die() {
         isDead = true;
+    }
+
+    public void DecreaseJumpTime(float amountInSeconds) {
+        newJumpTime = Mathf.Max(jumpTime - amountInSeconds, 0);
     }
 
     private void SelectSprite(float time) {
