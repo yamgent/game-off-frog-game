@@ -38,7 +38,7 @@ public class Background : MonoBehaviour
 
     // Get the actual sprite's world coordinate given the bgRow
     Vector3 GetWorldPosFromBgRow(int bgRow) {
-        return new Vector3(1.5f, 3.0f + (bgRow * BACKGROUND_GRAPHICS_SIZE), 0.0f);
+        return new Vector3(2.5f, 3.0f + (bgRow * BACKGROUND_GRAPHICS_SIZE), 0.0f);
     }
 
     // Create a new bg sprite, and associate the sprite with the bgRow
