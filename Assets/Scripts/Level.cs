@@ -26,6 +26,11 @@ public class Level : MonoBehaviour
     private int lastGeneratedBgRow = 0;
     private int lastRemovedBgRow = -1;
 
+    // the row where we split from n -> (n + 1) paths
+    private int splitPathRow = 0;
+    // the row where we start to merge all of the paths into 1 single path
+    private int startMergePathRow = 0;
+
     void Awake() {
         if (singleton != null) {
             Debug.LogError("Multiple Level managers found but should only have one!");
@@ -51,6 +56,8 @@ public class Level : MonoBehaviour
         if (lilypadTilemap == null) {
             Debug.LogError("Cannot find Lilypad tilemap layer!");
         }
+
+        SetUpNextSplitPath(10);
 
         if (Tutorial.GetSingleton().IsInTutorial()) {
             foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
@@ -137,6 +144,49 @@ public class Level : MonoBehaviour
         lilypadTilemap.SetTile(new Vector3Int(lane, row, 0), null);
     }
 
+    // given the position of the previous row's lilypad's lane, generate a new
+    // lilypad at the current row (either directly in front, or to the left,
+    // or to the right)
+    private void GenerateRandomLilypad(int currentRow, 
+        int prevRowLilypadLane) {
+
+        List<int> possibleLanes = new List<int>();
+
+        int leftLane = prevRowLilypadLane - 1;
+        if (IsWithinLaneBounds(leftLane) 
+            && !HasLilypadAt(currentRow, leftLane)) {
+
+            possibleLanes.Add(leftLane);
+        }
+
+        int rightLane = prevRowLilypadLane + 1;
+        if (IsWithinLaneBounds(rightLane)
+            && !HasLilypadAt(currentRow, rightLane)) {
+            
+            possibleLanes.Add(rightLane);
+        }
+
+        int straight = prevRowLilypadLane;
+        if (IsWithinLaneBounds(straight) 
+            && !HasLilypadAt(currentRow, straight)) {
+
+            possibleLanes.Add(straight);
+        }
+
+        Debug.Assert(possibleLanes.Count > 0);
+
+        int chosenLaneIndex = Random.Range(0, possibleLanes.Count);
+        AddLilypad(currentRow, possibleLanes[chosenLaneIndex]);
+    }
+
+    public void SetUpNextSplitPath(int baseRow) {
+        // set up the next split path
+
+        // TODO: Randomize this?
+        splitPathRow = baseRow + 10;
+        startMergePathRow = splitPathRow + 10;
+    }
+
     // generate new lilypads from startRow to endRow. The startRow - 1
     // must have a valid lilypad.
     public void GenerateRows(int startRow, int endRow) {
@@ -149,36 +199,55 @@ public class Level : MonoBehaviour
         }
 
         for (int row = startRow; row <= endRow; row++) {
-            // lilypad generation (normal path)
-            foreach (int lane in lastRowLanes) {
-                List<int> currentRowOptions = new List<int>();
-                currentRowOptions.Add(-1);
-                currentRowOptions.Add(0);
-                currentRowOptions.Add(1);
+            // lilypad generation
 
-                // get rid of illegal options
-                // left bound
-                if (lane <= 0) {
-                    currentRowOptions.Remove(-1);
+            // merging phase
+            if (row >= startMergePathRow) {
+                // "gravitate" the lilypads towards the centre point
+                // of the group of lilypads
+                int midPoint = 0;
+                foreach (int lane in lastRowLanes) {
+                    midPoint += lane;
                 }
-                // right bound
-                if (lane >= totalLanes - 1) {
-                    currentRowOptions.Remove(1);
-                }
-                // occupied space (we have more than 1 lilypad in row)
-                foreach (int option in currentRowOptions) {
-                    if (HasLilypadAt(row, lane + option)) {
-                        currentRowOptions.Remove(option);
+                midPoint /= lastRowLanes.Length;
+                
+                // only add the lilypad if they do not
+                // move beyond the centre point
+                foreach (int lane in lastRowLanes) {
+                    bool goRight = (midPoint - lane) > 0;
+                    
+                    if (goRight) {
+                        if (lane + 1 <= midPoint) {
+                            AddLilypad(row, lane + 1);
+                        }
+                    } else {
+                        if (lane - 1 >= midPoint) {
+                            AddLilypad(row, lane - 1);
+                        }
                     }
                 }
 
-                Debug.Assert(currentRowOptions.Count > 0);
+                // check if merging ended, if so, start preparing
+                // for the next split path
+                if (GetRowLilypadLanes(row).Length == 1) {
+                    SetUpNextSplitPath(row);
+                }
 
-                int chosenOptionIndex = Random.Range(0, currentRowOptions.Count);
-                int chosenLane = lane + currentRowOptions[chosenOptionIndex];
-                AddLilypad(row, chosenLane);
+            // normal / splitting phase
+            } else {
+                // generate next lilypad for each path
+                foreach (int lane in lastRowLanes) {
+                    GenerateRandomLilypad(row, lane);
+                }
+
+                // do we need to split?
+                if (row == splitPathRow) {
+                    // generate a new lilypad for the new path
+                    // by branching off the 0th path into two
+                    GenerateRandomLilypad(row, lastRowLanes[0]);
+                }
             }
-
+                
             lastRowLanes = GetRowLilypadLanes(row);
 
             // background generation
