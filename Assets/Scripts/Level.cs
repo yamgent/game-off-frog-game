@@ -9,7 +9,7 @@ public class Level : MonoBehaviour
 
     private Grid levelGrid;
     private Tilemap lilypadTilemap;
-    private int totalLanes = 3;
+    private int totalLanes = 5;
     private int firstGeneratedIndex = 0;
     private int lastGeneratedIndex = 0;
 
@@ -55,7 +55,7 @@ public class Level : MonoBehaviour
         if (Tutorial.GetSingleton().IsInTutorial()) {
             foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
                 lastGeneratedIndex++;
-                AddLilypad(lastGeneratedIndex, tutorialLane);
+                AddLilypad(lastGeneratedIndex, tutorialLane + 1);
             }
         }
 
