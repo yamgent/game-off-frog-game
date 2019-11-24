@@ -8,10 +8,14 @@ public class CameraController : MonoBehaviour {
     public Vector3 initialMovement;
     public Vector3 increaseMovement;
     public float increaseInterval;
+    public Vector3 boostAmount;
+    public float boostDuration;
 
     private bool isCameraMovementEnabled;
     private float timer;
     private Vector3 currentMovement;
+    private bool isBoost;
+    private float boostTimer;
 
     void Awake() {
         if (singleton != null) {
@@ -31,7 +35,18 @@ public class CameraController : MonoBehaviour {
         if (!isCameraMovementEnabled) {
             return;
         }
-        transform.position += (currentMovement * Time.deltaTime);
+
+        Vector3 moveAmount = currentMovement;
+        if (isBoost) {
+            moveAmount += boostAmount;
+            if (boostTimer > boostDuration) {
+                boostTimer = 0;
+                isBoost = false;
+            } else {
+                boostTimer += Time.deltaTime;
+            }
+        }
+        transform.position += (moveAmount * Time.deltaTime);
 
         if (timer > increaseInterval) {
             timer = 0;
@@ -59,5 +74,9 @@ public class CameraController : MonoBehaviour {
 
     public Vector3 GetCameraPosition() {
         return transform.position;
+    }
+
+    public void StartBoostCameraSpeed() {
+        isBoost = true;
     }
 }

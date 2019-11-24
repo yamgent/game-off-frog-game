@@ -408,6 +408,8 @@ MonoBehaviour:
   initialMovement: {x: 0, y: 0.1, z: 0}
   increaseMovement: {x: 0, y: 0.1, z: 0}
   increaseInterval: 10
+  boostAmount: {x: 0, y: 5, z: 0}
+  boostDuration: 0.5
 --- !u!1 &157343227
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +580,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 974476604}
-  trackingDistance: 3
+  trackingDistance: 2.5
+  maxDistance: 8.5
   startPosition: {x: 0, y: -4.5, z: 10}
   entranceTime: 1
   flapInterval: 15

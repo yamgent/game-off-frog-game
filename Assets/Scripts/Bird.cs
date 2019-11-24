@@ -6,6 +6,7 @@ public class Bird : MonoBehaviour {
 
     public GameObject target;
     public float trackingDistance;
+    public float maxDistance;
     public Vector3 startPosition;
     public float entranceTime;
     public float flapInterval;
@@ -36,7 +37,8 @@ public class Bird : MonoBehaviour {
 
         if (isChasing) {
             Vector3 pos = transform.position;
-            if (target.transform.position.y - pos.y < trackingDistance) {
+            float distance = target.transform.position.y - pos.y;
+            if (distance < trackingDistance) {
                 pos.x = target.transform.position.x;
                 animator.SetBool("Flapping", true);
             } else {
@@ -50,6 +52,10 @@ public class Bird : MonoBehaviour {
                 }
             }
             transform.position = Vector3.MoveTowards(transform.position, pos, 0.05f);
+
+            if (distance > maxDistance) {
+                CameraController.GetSingleton().StartBoostCameraSpeed();
+            }
         }
     }
 
