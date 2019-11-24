@@ -30,6 +30,8 @@ public class Level : MonoBehaviour
     private int splitPathRow = 0;
     // the row where we start to merge all of the paths into 1 single path
     private int startMergePathRow = 0;
+    // the row where we put an item on a random lilypad lane
+    private int itemRow = 0;
 
     void Awake() {
         if (singleton != null) {
@@ -73,9 +75,6 @@ public class Level : MonoBehaviour
         // TestStuff();
         GenerateRows(lastGeneratedIndex + 1, 20);
         lastGeneratedIndex = 20;
-
-        /* Test items. */
-        //ItemManager.GetSingleton().CreateItemAtPosition(ItemManager.ItemType.JumpSpeedDecrease, new Vector3(1.5f, 3.5f, 0.0f));
     }
 
     public static Level GetSingleton() {
@@ -185,6 +184,7 @@ public class Level : MonoBehaviour
         // TODO: Randomize this?
         splitPathRow = baseRow + 10;
         startMergePathRow = splitPathRow + 10;
+        itemRow = Random.Range(splitPathRow + 1, startMergePathRow);
     }
 
     // generate new lilypads from startRow to endRow. The startRow - 1
@@ -246,6 +246,12 @@ public class Level : MonoBehaviour
                     // by branching off the 0th path into two
                     GenerateRandomLilypad(row, lastRowLanes[0]);
                 }
+
+                if (row == itemRow) {
+                    int[] lilypadLanes = GetRowLilypadLanes(row);
+                    int chosenLaneIndex = Random.Range(0, lilypadLanes.Length);
+                    SpawnItem(ItemManager.ItemType.SpeedUpItem, row, lilypadLanes[chosenLaneIndex]);
+                }
             }
                 
             lastRowLanes = GetRowLilypadLanes(row);
@@ -286,6 +292,10 @@ public class Level : MonoBehaviour
             DeleteRows(firstGeneratedIndex, removeTo);
             firstGeneratedIndex = removeTo;
         }
+    }
+
+    private void SpawnItem(ItemManager.ItemType itemType, int row, int lane) {
+        ItemManager.GetSingleton().CreateItemAtPosition(itemType, GetLilypadOriginWorldCoordinate(row, lane));
     }
 
     /*

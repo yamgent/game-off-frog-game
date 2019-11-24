@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 131638993}
   - component: {fileID: 131638992}
   m_Layer: 0
-  m_Name: JumpSpeedDecreaseItem
+  m_Name: SpeedUpItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1382bb74774f524bb4941cb0dee03f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decreaseInSeconds: 0.3
+  speedUpAmount: 0.3
 --- !u!61 &131638993
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1407,7 +1407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c380516d90505642831fdc441a49be0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpTime: 1
+  speed: 1
 --- !u!95 &974476608
 Animator:
   serializedVersion: 3

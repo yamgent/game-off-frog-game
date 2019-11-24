@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public enum ItemType { JumpSpeedDecrease, };
+    public enum ItemType { SpeedUpItem, };
 
     private static ItemManager singleton;
 
-    public GameObject jumpSpeedDecreaseItem;
+    public GameObject speedUpItem;
 
     void Awake() {
         if (singleton != null) {
@@ -24,8 +24,8 @@ public class ItemManager : MonoBehaviour
     public void CreateItemAtPosition(ItemType itemType, Vector3 position) {
         GameObject item = null;
         switch (itemType) {
-            case ItemType.JumpSpeedDecrease:
-                item = Instantiate(jumpSpeedDecreaseItem, position, Quaternion.identity);
+            case ItemType.SpeedUpItem:
+                item = Instantiate(speedUpItem, position, Quaternion.identity);
                 break;
             default:
                 Debug.LogError("ItemManager#CreateItemAtPosition: Unhandled item type!");
