@@ -57,7 +57,7 @@ public class Level : MonoBehaviour
             Debug.LogError("Cannot find Lilypad tilemap layer!");
         }
 
-        SetUpNextSplitPath(10);
+        SetUpNextSplitPath(0);
 
         if (Tutorial.GetSingleton().IsInTutorial()) {
             foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
