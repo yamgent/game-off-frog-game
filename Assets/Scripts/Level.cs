@@ -89,14 +89,16 @@ public class Level : MonoBehaviour
     }
 
     // get the lane number of the lilypad for a particular row
-    private int GetRowLilypadLane(int row) {
+    private int[] GetRowLilypadLanes(int row) {
+        List<int> results = new List<int>();
+
         for (int lane = 0; lane < totalLanes; lane++) {
             if (HasLilypadAt(row, lane)) {
-                return lane;
+                results.Add(lane);
             }
         }
 
-        return -1;
+        return results.ToArray();
     }
 
     private void AddLilypad(int row, int lane) {
@@ -138,16 +140,17 @@ public class Level : MonoBehaviour
     // generate new lilypads from startRow to endRow. The startRow - 1
     // must have a valid lilypad.
     public void GenerateRows(int startRow, int endRow) {
-        int lastRowLane = GetRowLilypadLane(startRow - 1);
+        int[] lastRowLanes = GetRowLilypadLanes(startRow - 1);
 
-        if (lastRowLane < 0) {
+        if (lastRowLanes.Length == 0) {
             Debug.LogError("Row before startRow " + startRow 
                 + "is deleted, but the frog may not even have reached that row!");
             return;
         }
 
         for (int row = startRow; row <= endRow; row++) {
-            int currentRowLane = lastRowLane;
+            // TODO: Handle multiple lanes
+            int currentRowLane = lastRowLanes[0];
 
             if (currentRowLane <= 0) {
                 currentRowLane = Random.Range(0, 2);
@@ -165,17 +168,15 @@ public class Level : MonoBehaviour
                 lastGeneratedBgRow = currentRowBgRow;
             }
 
-            lastRowLane = currentRowLane;
+            lastRowLanes[0] = currentRowLane;
         }
     }
 
     public void DeleteRows(int startRow, int endRow) {
         for (int row = startRow; row <= endRow; row++) {
-            int lane = GetRowLilypadLane(row);
-            if (lane == -1) {
-                continue;
+            foreach (int lane in GetRowLilypadLanes(row)) {
+                DeleteLilypad(row, lane);
             }
-            DeleteLilypad(row, lane);
 
             // the previous background will be devoid of lilypads/rocks
             if (background.GetBgRowFromFrogRow(row + 1) > lastRemovedBgRow + 1) {
@@ -215,7 +216,7 @@ public class Level : MonoBehaviour
         }
 
         for (int r = 0; r < 10; r++) {
-            Debug.Log("Row " + r + ": " + GetRowLilypadLane(r));
+            Debug.Log("Row " + r + ": " + GetRowLilypadLanes(r).ToString());
         }
         GenerateRows(7, 12);
         DeleteRows(0, 4);
