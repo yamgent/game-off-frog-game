@@ -62,7 +62,7 @@ public class Level : MonoBehaviour
         if (Tutorial.GetSingleton().IsInTutorial()) {
             foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
                 lastGeneratedIndex++;
-                AddLilypad(lastGeneratedIndex, tutorialLane + 1);
+                AddLilypad(lastGeneratedIndex, tutorialLane);
             }
         }
 

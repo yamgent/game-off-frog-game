@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Tutorial : MonoBehaviour
 {
     // Hardcoded tutorial sequences.
-    private readonly int[] TUTORIAL_LANE_SEQUENCE = { 1, 0, 1 };
+    private readonly int[] TUTORIAL_LANE_SEQUENCE = { 2, 1, 2 };
     private readonly TutorialButtonKey[] TUTORIAL_BUTTON_HINT_SEQUENCE = { 
         TutorialButtonKey.Up, TutorialButtonKey.Left, TutorialButtonKey.Right };
 
