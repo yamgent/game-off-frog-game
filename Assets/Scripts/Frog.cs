@@ -27,7 +27,7 @@ public class Frog : MonoBehaviour
         newJumpTime = jumpTime;
 
         currentRow = 0;
-        currentCol = 1;
+        currentCol = 2;
 
         animator = GetComponent<Animator>();
     }
