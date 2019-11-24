@@ -21,11 +21,15 @@ public class ItemManager : MonoBehaviour
         return singleton;
     }
 
-    public void CreateItemAtPosition(ItemType itemType, Vector3 position) {
+    public void CreateItem(ItemType itemType, int row, int col) {
         GameObject item = null;
         switch (itemType) {
             case ItemType.SpeedUpItem:
-                item = Instantiate(speedUpItem, position, Quaternion.identity);
+                item = Instantiate(
+                    speedUpItem,
+                    Level.GetSingleton().GetLilypadOriginWorldCoordinate(row, col),
+                    Quaternion.identity);
+                item.GetComponent<SpeedUpItem>().spawnAt(row, col);
                 break;
             default:
                 Debug.LogError("ItemManager#CreateItemAtPosition: Unhandled item type!");

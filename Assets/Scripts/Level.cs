@@ -250,7 +250,10 @@ public class Level : MonoBehaviour
                 if (row == itemRow) {
                     int[] lilypadLanes = GetRowLilypadLanes(row);
                     int chosenLaneIndex = Random.Range(0, lilypadLanes.Length);
-                    SpawnItem(ItemManager.ItemType.SpeedUpItem, row, lilypadLanes[chosenLaneIndex]);
+                    ItemManager.GetSingleton().CreateItem(
+                        ItemManager.ItemType.SpeedUpItem,
+                        row,
+                        lilypadLanes[chosenLaneIndex]);
                 }
             }
                 
@@ -292,10 +295,6 @@ public class Level : MonoBehaviour
             DeleteRows(firstGeneratedIndex, removeTo);
             firstGeneratedIndex = removeTo;
         }
-    }
-
-    private void SpawnItem(ItemManager.ItemType itemType, int row, int lane) {
-        ItemManager.GetSingleton().CreateItemAtPosition(itemType, GetLilypadOriginWorldCoordinate(row, lane));
     }
 
     /*
