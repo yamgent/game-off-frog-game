@@ -149,26 +149,44 @@ public class Level : MonoBehaviour
         }
 
         for (int row = startRow; row <= endRow; row++) {
-            // TODO: Handle multiple lanes
-            int currentRowLane = lastRowLanes[0];
+            // lilypad generation (normal path)
+            foreach (int lane in lastRowLanes) {
+                List<int> currentRowOptions = new List<int>();
+                currentRowOptions.Add(-1);
+                currentRowOptions.Add(0);
+                currentRowOptions.Add(1);
 
-            if (currentRowLane <= 0) {
-                currentRowLane = Random.Range(0, 2);
-            } else if (currentRowLane >= totalLanes - 1) {
-                currentRowLane = Random.Range(totalLanes - 2, totalLanes);
-            } else {
-                currentRowLane = Random.Range(currentRowLane - 1, currentRowLane + 2);
+                // get rid of illegal options
+                // left bound
+                if (lane <= 0) {
+                    currentRowOptions.Remove(-1);
+                }
+                // right bound
+                if (lane >= totalLanes - 1) {
+                    currentRowOptions.Remove(1);
+                }
+                // occupied space (we have more than 1 lilypad in row)
+                foreach (int option in currentRowOptions) {
+                    if (HasLilypadAt(row, lane + option)) {
+                        currentRowOptions.Remove(option);
+                    }
+                }
+
+                Debug.Assert(currentRowOptions.Count > 0);
+
+                int chosenOptionIndex = Random.Range(0, currentRowOptions.Count);
+                int chosenLane = lane + currentRowOptions[chosenOptionIndex];
+                AddLilypad(row, chosenLane);
             }
 
-            AddLilypad(row, currentRowLane);
+            lastRowLanes = GetRowLilypadLanes(row);
 
+            // background generation
             int currentRowBgRow = background.GetBgRowFromFrogRow(row);
             if (currentRowBgRow != lastGeneratedBgRow) {
                 background.SpawnBg(currentRowBgRow);
                 lastGeneratedBgRow = currentRowBgRow;
             }
-
-            lastRowLanes[0] = currentRowLane;
         }
     }
 
