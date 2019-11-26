@@ -29,12 +29,13 @@ public class ItemManager : MonoBehaviour
                     speedUpItem,
                     Level.GetSingleton().GetLilypadOriginWorldCoordinate(row, col),
                     Quaternion.identity);
-                item.GetComponent<SpeedUpItem>().spawnAt(row, col);
+                SpeedUpItem itemScript = item.GetComponent<SpeedUpItem>();
+                itemScript.spawnAt(row, col);
+                itemScript.enabled = true;
                 break;
             default:
                 Debug.LogError("ItemManager#CreateItemAtPosition: Unhandled item type!");
                 return;
         }
-        item.GetComponent<BoxCollider2D>().enabled = true;
     }
 }

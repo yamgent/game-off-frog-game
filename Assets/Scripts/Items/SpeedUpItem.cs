@@ -5,10 +5,10 @@ using UnityEngine;
 public class SpeedUpItem : MonoBehaviour
 {
     public float speedUpFactor;
+    public GameObject speedUpItemText;
 
     private Level level;
 
-    private bool isSpawned = false;
     private int row = -1;
     private int col = -1;
 
@@ -17,7 +17,7 @@ public class SpeedUpItem : MonoBehaviour
     }
 
     void Update() {
-        if (isSpawned && !level.HasLilypadAt(row, col)) {
+        if (!level.HasLilypadAt(row, col)) {
             Destroy(gameObject);
         }
     }
@@ -26,13 +26,18 @@ public class SpeedUpItem : MonoBehaviour
         if (col.CompareTag("Player")) {
             col.GetComponent<Frog>().speed *= speedUpFactor;
             col.GetComponent<Frog>().CalculateNewJumpTime();
+
+            GameObject text = Instantiate(
+                speedUpItemText, transform.position, transform.rotation);
+            text.GetComponent<FloatUpText>().enabled = true;
+
             Destroy(gameObject);
         }
     }
 
     public void spawnAt(int row, int col) {
-        this.isSpawned = true;
         this.row = row;
         this.col = col;
+        GetComponent<BoxCollider2D>().enabled = true;
     }
 }
