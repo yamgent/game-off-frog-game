@@ -30,6 +30,7 @@ public class SpeedUpItem : MonoBehaviour
             GameObject text = Instantiate(
                 speedUpItemText, transform.position, transform.rotation);
             text.GetComponent<FloatUpText>().enabled = true;
+            text.GetComponent<AudioSource>().Play();
 
             Destroy(gameObject);
         }
