@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public enum ItemType { JumpSpeedDecrease, };
+    public enum ItemType { SpeedUpItem, };
 
     private static ItemManager singleton;
 
-    public GameObject jumpSpeedDecreaseItem;
+    public GameObject speedUpItem;
 
     void Awake() {
         if (singleton != null) {
@@ -21,16 +21,21 @@ public class ItemManager : MonoBehaviour
         return singleton;
     }
 
-    public void CreateItemAtPosition(ItemType itemType, Vector3 position) {
+    public void CreateItem(ItemType itemType, int row, int col) {
         GameObject item = null;
         switch (itemType) {
-            case ItemType.JumpSpeedDecrease:
-                item = Instantiate(jumpSpeedDecreaseItem, position, Quaternion.identity);
+            case ItemType.SpeedUpItem:
+                item = Instantiate(
+                    speedUpItem,
+                    Level.GetSingleton().GetLilypadOriginWorldCoordinate(row, col),
+                    Quaternion.identity);
+                SpeedUpItem itemScript = item.GetComponent<SpeedUpItem>();
+                itemScript.spawnAt(row, col);
+                itemScript.enabled = true;
                 break;
             default:
                 Debug.LogError("ItemManager#CreateItemAtPosition: Unhandled item type!");
                 return;
         }
-        item.GetComponent<BoxCollider2D>().enabled = true;
     }
 }

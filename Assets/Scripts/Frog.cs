@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class Frog : MonoBehaviour
 {
-    public float jumpTime;
+    // Let frog's jump time as a function of speed be f(spd) = 1/(spd^2).
+    public float speed;
 
+    private float jumpTime;
     private float timer;
     private Vector2 startPosition;
     private Vector2 targetPosition;
-    private float newJumpTime;
 
     public bool isMoving { get; private set; }
     public bool isDead { get; private set; }
@@ -24,7 +25,7 @@ public class Frog : MonoBehaviour
         isDead = false;
         timer = 0;
         startPosition = transform.position;
-        newJumpTime = jumpTime;
+        CalculateNewJumpTime();
 
         currentRow = 0;
         currentCol = 2;
@@ -48,8 +49,6 @@ public class Frog : MonoBehaviour
         } else if (isDead) {
             animator.SetTrigger("Die");
             CameraController.GetSingleton().StopCameraMovement();
-        } else {
-            jumpTime = newJumpTime;
         }
     }
 
@@ -71,10 +70,6 @@ public class Frog : MonoBehaviour
         isDead = true;
     }
 
-    public void DecreaseJumpTime(float amountInSeconds) {
-        newJumpTime = Mathf.Max(jumpTime - amountInSeconds, 0);
-    }
-
     private void SelectSprite(float time) {
         if (time >= 1) {
             animator.SetBool("Jumping", false);
@@ -88,6 +83,14 @@ public class Frog : MonoBehaviour
             animator.SetBool("FullJump", false);
         } else {
             animator.SetBool("Jumping", false);
+        }
+    }
+
+    public void CalculateNewJumpTime() {
+        float jumpingAnimationRatio = Mathf.Min(1, timer / jumpTime);
+        jumpTime = 1.0f / (speed * speed);
+        if (jumpingAnimationRatio < 1.0f) {
+            timer = jumpingAnimationRatio * jumpTime;
         }
     }
 }
