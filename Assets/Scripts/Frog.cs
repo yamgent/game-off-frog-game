@@ -19,6 +19,10 @@ public class Frog : MonoBehaviour
 
     private Animator animator;
 
+    public AudioSource jumpSound;
+    public AudioSource deathSound;
+    private bool deathAnimationPlayed;
+
     // Start is called before the first frame update
     void Start() {
         isMoving = false;
@@ -31,6 +35,8 @@ public class Frog : MonoBehaviour
         currentCol = 2;
 
         animator = GetComponent<Animator>();
+
+        deathAnimationPlayed = false;
     }
 
     // Update is called once per frame
@@ -47,8 +53,13 @@ public class Frog : MonoBehaviour
                 SelectSprite(time);
             }
         } else if (isDead) {
-            animator.SetTrigger("Die");
-            CameraController.GetSingleton().StopCameraMovement();
+            if (!deathAnimationPlayed) {
+                deathAnimationPlayed = true;
+
+                animator.SetTrigger("Die");
+                CameraController.GetSingleton().StopCameraMovement();
+                deathSound.Play();
+            }
         }
     }
 
@@ -56,10 +67,12 @@ public class Frog : MonoBehaviour
         currentRow += rowBy;
         currentCol += colBy;
 
+        jumpSound.Play();
+
         if (Level.GetSingleton().HasLilypadAt(currentRow, currentCol)) {
             Score.GetSingleton().AddToCurrentScore(rowBy);
         } else {
-            isDead = true;
+            Die();
         }
         targetPosition = Level.GetSingleton().GetLilypadOriginWorldCoordinate(currentRow, currentCol);
         isMoving = true;
