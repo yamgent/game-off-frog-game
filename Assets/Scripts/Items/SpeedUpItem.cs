@@ -26,6 +26,7 @@ public class SpeedUpItem : MonoBehaviour
         if (col.CompareTag("Player")) {
             col.GetComponent<Frog>().speed *= speedUpFactor;
             col.GetComponent<Frog>().CalculateNewJumpTime();
+            col.GetComponent<Frog>().CalculateNewJumpSoundPitch();
 
             GameObject text = Instantiate(
                 speedUpItemText, transform.position, transform.rotation);
