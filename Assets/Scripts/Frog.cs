@@ -23,6 +23,8 @@ public class Frog : MonoBehaviour
     public AudioSource deathSound;
     private bool deathAnimationPlayed;
 
+    private Environment.BiomeType frogCurrentBiome = Environment.BiomeType.Water;
+
     // Start is called before the first frame update
     void Start() {
         isMoving = false;
@@ -77,6 +79,12 @@ public class Frog : MonoBehaviour
         targetPosition = Level.GetSingleton().GetLilypadOriginWorldCoordinate(currentRow, currentCol);
         isMoving = true;
         Level.GetSingleton().UpdateFrogPosition(currentRow);
+
+        Environment.BiomeType frogNewBiome = Environment.GetSingleton().GetBiomeAt(currentRow);
+        if (frogNewBiome != frogCurrentBiome) {
+            MusicManager.GetSingleton().ChangeBiomeMusic(frogNewBiome);
+        }
+        frogCurrentBiome = frogNewBiome;
     }
 
     public void Die() {
