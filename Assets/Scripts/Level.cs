@@ -61,7 +61,7 @@ public class Level : MonoBehaviour
 
         SetUpNextSplitPath(0);
 
-        if (Tutorial.GetSingleton().IsInTutorial()) {
+        if (Tutorial.GetSingleton().IsTutorialEnded()) {
             foreach (int tutorialLane in Tutorial.GetSingleton().GetLaneSequence()) {
                 lastGeneratedIndex++;
                 AddLilypad(lastGeneratedIndex, tutorialLane);

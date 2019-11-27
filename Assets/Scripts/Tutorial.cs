@@ -14,6 +14,7 @@ public class Tutorial : MonoBehaviour
 
     private static Tutorial singleton;
 
+    private static bool isTutorialStarted = false;
     private static bool isTutorialEnded = false;
     private int tutorialCurrentStep;
 
@@ -37,16 +38,17 @@ public class Tutorial : MonoBehaviour
             Destroy(tutorialRightButtonImage.gameObject);
             return;
         }
-        
-        tutorialCurrentStep = 0;
-        ShowNextButtonHint();
     }
 
     public static Tutorial GetSingleton() {
         return singleton;
     }
 
-    public bool IsInTutorial() {
+    public bool IsTutorialStarted() {
+        return isTutorialStarted;
+    }
+
+    public bool IsTutorialEnded() {
         return !isTutorialEnded;
     }
 
@@ -99,8 +101,21 @@ public class Tutorial : MonoBehaviour
         CameraController.GetSingleton().StartCameraMovement();
     }
 
+    public void StartTutorial() {
+        tutorialButtonsModalImage.gameObject.SetActive(true);
+        tutorialLeftButtonImage.gameObject.SetActive(true);
+        tutorialUpButtonImage.gameObject.SetActive(true);
+        tutorialRightButtonImage.gameObject.SetActive(true);
+
+        tutorialCurrentStep = 0;
+        ShowNextButtonHint();
+
+        isTutorialStarted = true;
+    }
+
     // For testing purposes.
     public void ResetTutorial() {
+        isTutorialStarted = false;
         isTutorialEnded = false;
     }
 }

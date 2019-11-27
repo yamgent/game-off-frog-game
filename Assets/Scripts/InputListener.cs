@@ -22,6 +22,7 @@ public class InputListener : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.R)) {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
+            Tutorial.GetSingleton().ResetTutorial();
         }
 
         if (Input.GetKeyDown(KeyCode.T)) {
@@ -32,7 +33,12 @@ public class InputListener : MonoBehaviour {
     }
 
     private void TryMoveFrog(int rowBy, int colBy) {
-        if (Tutorial.GetSingleton().IsInTutorial()) {
+        if (Tutorial.GetSingleton().IsTutorialEnded()) {
+            // Cannot move before tutorial starts
+            if (!Tutorial.GetSingleton().IsTutorialStarted()) {
+                return;
+            }
+
             // Cannot make failure move while in tutorial.
             if (!Level.GetSingleton().HasLilypadAt(frog.currentRow + rowBy, frog.currentCol + colBy)) {
                 return;
