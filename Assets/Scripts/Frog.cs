@@ -125,6 +125,5 @@ public class Frog : MonoBehaviour
 
         jumpSound.pitch = Mathf.Lerp(JUMP_SOUND_MINIMUM_PITCH, 
             JUMP_SOUND_MAXIMUM_PITCH, pitchRatio);
-        Debug.Log(jumpSound.pitch);
     }
 }
