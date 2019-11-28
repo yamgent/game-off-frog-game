@@ -1882,6 +1882,8 @@ MonoBehaviour:
   speed: 1
   jumpSound: {fileID: 882706737}
   deathSound: {fileID: 1850378120}
+  jumpSoundMinimumPitch: 0.5
+  jumpSoundMaximumPitch: 1
 --- !u!95 &974476608
 Animator:
   serializedVersion: 3

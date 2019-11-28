@@ -23,8 +23,8 @@ public class Frog : MonoBehaviour
     public AudioSource deathSound;
     private bool deathAnimationPlayed;
 
-    private const float JUMP_SOUND_MINIMUM_PITCH = 0.5f;
-    private const float JUMP_SOUND_MAXIMUM_PITCH = 2.0f;
+    public float jumpSoundMinimumPitch = 0.5f;
+    public float jumpSoundMaximumPitch = 1.0f;
 
     private Environment.BiomeType frogCurrentBiome = Environment.BiomeType.Water;
 
@@ -43,7 +43,7 @@ public class Frog : MonoBehaviour
 
         deathAnimationPlayed = false;
 
-        jumpSound.pitch = JUMP_SOUND_MINIMUM_PITCH;
+        jumpSound.pitch = jumpSoundMinimumPitch;
     }
 
     // Update is called once per frame
@@ -123,7 +123,7 @@ public class Frog : MonoBehaviour
     public void CalculateNewJumpSoundPitch() {
         float pitchRatio = Mathf.Min(1.0f, speed - 1.0f);
 
-        jumpSound.pitch = Mathf.Lerp(JUMP_SOUND_MINIMUM_PITCH, 
-            JUMP_SOUND_MAXIMUM_PITCH, pitchRatio);
+        jumpSound.pitch = Mathf.Lerp(jumpSoundMinimumPitch, 
+            jumpSoundMaximumPitch, pitchRatio);
     }
 }
