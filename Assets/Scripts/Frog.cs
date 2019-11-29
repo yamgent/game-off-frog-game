@@ -19,6 +19,15 @@ public class Frog : MonoBehaviour
 
     private Animator animator;
 
+    public AudioSource jumpSound;
+    public AudioSource deathSound;
+    private bool deathAnimationPlayed;
+
+    public float jumpSoundMinimumPitch = 0.5f;
+    public float jumpSoundMaximumPitch = 1.0f;
+
+    private Environment.BiomeType frogCurrentBiome = Environment.BiomeType.Water;
+
     // Start is called before the first frame update
     void Start() {
         isMoving = false;
@@ -31,6 +40,10 @@ public class Frog : MonoBehaviour
         currentCol = 2;
 
         animator = GetComponent<Animator>();
+
+        deathAnimationPlayed = false;
+
+        jumpSound.pitch = jumpSoundMinimumPitch;
     }
 
     // Update is called once per frame
@@ -47,8 +60,13 @@ public class Frog : MonoBehaviour
                 SelectSprite(time);
             }
         } else if (isDead) {
-            animator.SetTrigger("Die");
-            CameraController.GetSingleton().StopCameraMovement();
+            if (!deathAnimationPlayed) {
+                deathAnimationPlayed = true;
+
+                animator.SetTrigger("Die");
+                CameraController.GetSingleton().StopCameraMovement();
+                deathSound.Play();
+            }
         }
     }
 
@@ -56,14 +74,22 @@ public class Frog : MonoBehaviour
         currentRow += rowBy;
         currentCol += colBy;
 
+        jumpSound.Play();
+
         if (Level.GetSingleton().HasLilypadAt(currentRow, currentCol)) {
             Score.GetSingleton().AddToCurrentScore(rowBy);
         } else {
-            isDead = true;
+            Die();
         }
         targetPosition = Level.GetSingleton().GetLilypadOriginWorldCoordinate(currentRow, currentCol);
         isMoving = true;
         Level.GetSingleton().UpdateFrogPosition(currentRow);
+
+        Environment.BiomeType frogNewBiome = Environment.GetSingleton().GetBiomeAt(currentRow);
+        if (frogNewBiome != frogCurrentBiome) {
+            MusicManager.GetSingleton().ChangeBiomeMusic(frogNewBiome);
+        }
+        frogCurrentBiome = frogNewBiome;
     }
 
     public void Die() {
@@ -92,5 +118,12 @@ public class Frog : MonoBehaviour
         if (jumpingAnimationRatio < 1.0f) {
             timer = jumpingAnimationRatio * jumpTime;
         }
+    }
+
+    public void CalculateNewJumpSoundPitch() {
+        float pitchRatio = Mathf.Min(1.0f, speed - 1.0f);
+
+        jumpSound.pitch = Mathf.Lerp(jumpSoundMinimumPitch, 
+            jumpSoundMaximumPitch, pitchRatio);
     }
 }
