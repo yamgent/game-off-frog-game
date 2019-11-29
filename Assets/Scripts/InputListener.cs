@@ -33,7 +33,7 @@ public class InputListener : MonoBehaviour {
     }
 
     private void TryMoveFrog(int rowBy, int colBy) {
-        if (Tutorial.GetSingleton().IsTutorialEnded()) {
+        if (!Tutorial.GetSingleton().IsTutorialEnded()) {
             // Cannot move before tutorial starts
             if (!Tutorial.GetSingleton().IsTutorialStarted()) {
                 return;

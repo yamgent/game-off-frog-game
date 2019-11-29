@@ -49,7 +49,7 @@ public class Tutorial : MonoBehaviour
     }
 
     public bool IsTutorialEnded() {
-        return !isTutorialEnded;
+        return isTutorialEnded;
     }
 
     public int[] GetLaneSequence() {
