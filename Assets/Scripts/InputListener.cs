@@ -25,10 +25,12 @@ public class InputListener : MonoBehaviour {
             Tutorial.GetSingleton().ResetTutorial();
         }
 
-        if (Input.GetKeyDown(KeyCode.T)) {
-            Tutorial.GetSingleton().ResetTutorial();
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
+        if (Input.GetKeyDown(KeyCode.P)) {
+            if (Time.timeScale != 0) {
+                Time.timeScale = 0;
+            } else {
+                Time.timeScale = 1;
+            }
         }
     }
 
