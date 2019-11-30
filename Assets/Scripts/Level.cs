@@ -184,7 +184,7 @@ public class Level : MonoBehaviour
         // TODO: Randomize this?
         splitPathRow = baseRow + 10;
         startMergePathRow = splitPathRow + 10;
-        itemRow = Random.Range(splitPathRow + 1, startMergePathRow);
+        itemRow = Random.Range(splitPathRow + 2, splitPathRow + 6);
     }
 
     // generate new lilypads from startRow to endRow. The startRow - 1
