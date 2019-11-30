@@ -18,20 +18,6 @@ public class InputListener : MonoBehaviour {
                 TryMoveFrog(1, 1);
             }
         }
-
-        if (Input.GetKeyDown(KeyCode.R)) {
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-            Tutorial.GetSingleton().ResetTutorial();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P)) {
-            if (Time.timeScale != 0) {
-                Time.timeScale = 0;
-            } else {
-                Time.timeScale = 1;
-            }
-        }
     }
 
     private void TryMoveFrog(int rowBy, int colBy) {
