@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public enum ItemType { SpeedUpItem, };
+    public enum ItemType { SpeedUpItem, SpeedUpItemSpace };
 
     private static ItemManager singleton;
 
     public GameObject speedUpItem;
+    public GameObject speedUpItemSpace;
 
     void Awake() {
         if (singleton != null) {
@@ -25,8 +26,13 @@ public class ItemManager : MonoBehaviour
         GameObject item = null;
         switch (itemType) {
             case ItemType.SpeedUpItem:
+            case ItemType.SpeedUpItemSpace:
+                GameObject toSpawn = speedUpItem;
+                if (itemType == ItemType.SpeedUpItemSpace) {
+                    toSpawn = speedUpItemSpace;
+                }
                 item = Instantiate(
-                    speedUpItem,
+                    toSpawn,
                     Level.GetSingleton().GetLilypadOriginWorldCoordinate(row, col),
                     Quaternion.identity);
                 SpeedUpItem itemScript = item.GetComponent<SpeedUpItem>();

@@ -36,7 +36,7 @@ public class StartScreenController : MonoBehaviour {
     void Update() {
         if (isAnimationStart) {
             timer += Time.deltaTime;
-            bird.transform.position = Vector3.MoveTowards(bird.transform.position, birdFinalPosition, 0.05f);
+            bird.transform.position = Vector3.MoveTowards(bird.transform.position, birdFinalPosition, 0.08f);
             if (timer > changeSceneTime) {
                 SceneManager.LoadScene("MainScene");
             } else if (timer > frogJumpTime && jumpIndex < frogPositions.Length - 1) {
