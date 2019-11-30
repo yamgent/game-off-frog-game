@@ -19,6 +19,8 @@ public class StartScreenController : MonoBehaviour {
     
     private Animator frogAnimator;
 
+    public StartScreenMusic startScreenMusic;
+
     // Start is called before the first frame update
     void Start() {
         isAnimationStart = false;
@@ -53,5 +55,6 @@ public class StartScreenController : MonoBehaviour {
     void StartButtonClick() {
         isAnimationStart = true;
         startButton.gameObject.SetActive(false);
+        startScreenMusic.StartFadeOut();
     }
 }
