@@ -1266,7 +1266,7 @@ MonoBehaviour:
   birdFinalPosition: {x: -6, y: 4.5, z: 0}
   frogShockTime: 1
   frogJumpTime: 2
-  changeSceneTime: 5
+  changeSceneTime: 4
   startScreenMusic: {fileID: 927215565}
 --- !u!4 &2114468406
 Transform:

@@ -32,6 +32,8 @@ public class Level : MonoBehaviour
     private int startMergePathRow = 0;
     // the row where we put an item on a random lilypad lane
     private int itemRow = 0;
+    // how much to offset the next split path
+    private int splitPathDifficulty = 20;
 
     void Awake() {
         if (singleton != null) {
@@ -181,9 +183,10 @@ public class Level : MonoBehaviour
     public void SetUpNextSplitPath(int baseRow) {
         // set up the next split path
 
-        // TODO: Randomize this?
-        splitPathRow = baseRow + 10;
-        startMergePathRow = splitPathRow + 10;
+        int offset = splitPathDifficulty / 2;
+        splitPathRow = baseRow + offset;
+        startMergePathRow = splitPathRow + offset;
+        splitPathDifficulty++;
         itemRow = Random.Range(splitPathRow + 2, splitPathRow + 6);
     }
 
@@ -250,8 +253,12 @@ public class Level : MonoBehaviour
                 if (row == itemRow) {
                     int[] lilypadLanes = GetRowLilypadLanes(row);
                     int chosenLaneIndex = Random.Range(0, lilypadLanes.Length);
+                    ItemManager.ItemType type = ItemManager.ItemType.SpeedUpItem;
+                    if (environmentSingleton.GetBiomeAt(row) == Environment.BiomeType.Space) {
+                        type = ItemManager.ItemType.SpeedUpItemSpace;
+                    }
                     ItemManager.GetSingleton().CreateItem(
-                        ItemManager.ItemType.SpeedUpItem,
+                        type,
                         row,
                         lilypadLanes[chosenLaneIndex]);
                 }
