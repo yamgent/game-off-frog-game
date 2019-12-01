@@ -2675,6 +2675,7 @@ GameObject:
   - component: {fileID: 1370172815}
   - component: {fileID: 1370172814}
   - component: {fileID: 1370172813}
+  - component: {fileID: 1370172819}
   m_Layer: 0
   m_Name: DragonflyItemSpace
   m_TagString: Untagged
@@ -2822,6 +2823,25 @@ Transform:
   m_Father: {fileID: 89621558}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1370172819
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370172812}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6481a6cb8c22cbf43b2ef4500158f2b9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1484251860
 GameObject:
   m_ObjectHideFlags: 0
@@ -3283,6 +3303,7 @@ GameObject:
   - component: {fileID: 1614031415}
   - component: {fileID: 1614031414}
   - component: {fileID: 1614031418}
+  - component: {fileID: 1614031419}
   m_Layer: 0
   m_Name: DragonflyItem
   m_TagString: Untagged
@@ -3430,6 +3451,25 @@ MonoBehaviour:
   moveTime: 0.5
   idleTimeFactor: 1
   distanceToStart: 5
+--- !u!95 &1614031419
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614031412}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c8cc69bac5beb2b4bbd928f20cb7c9a2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1617962707
 GameObject:
   m_ObjectHideFlags: 0
