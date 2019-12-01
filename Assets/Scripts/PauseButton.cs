@@ -37,6 +37,7 @@ public class PauseButton : MonoBehaviour {
     void HomeButtonClick() {
         Debug.Log("Home");
         SceneManager.LoadScene("MenuScene");
+        Tutorial.GetSingleton().ResetTutorial();
         Time.timeScale = 1;
     }
     void ResumeButtonClick() {
