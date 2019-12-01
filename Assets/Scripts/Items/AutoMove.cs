@@ -18,8 +18,6 @@ public class AutoMove : MonoBehaviour
     private int currentRow;
     private int currentCol;
 
-    private Animator animator;
-
     private CameraController cameraController;
     private Level level;
 
@@ -30,8 +28,6 @@ public class AutoMove : MonoBehaviour
 
         isAutoMoveStarted = false;
         isMoving = false;
-
-        //animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -56,7 +52,6 @@ public class AutoMove : MonoBehaviour
             } else {
                 float time = Mathf.Min(1, timer / moveTime);
                 transform.position = Vector2.Lerp(startPosition, targetPosition, time);
-                //SelectSprite(time);
             }
         } else {
             if (timer > idleTime) {
@@ -93,21 +88,5 @@ public class AutoMove : MonoBehaviour
         currentRow++;
         currentCol = nextPossibleCols[Random.Range(0, nextPossibleCols.Count)];
         targetPosition = level.GetLilypadOriginWorldCoordinate(currentRow, currentCol);
-    }
-
-    private void SelectSprite(float time) {
-        if (time >= 1) {
-            animator.SetBool("Jumping", false);
-        } else if (time > 0.9f) {
-            animator.SetBool("Jumping", true);
-            animator.SetBool("FullJump", false);
-        } else if (time > 0.2f) {
-            animator.SetBool("FullJump", true);
-        } else if (time > 0.1f) {
-            animator.SetBool("Jumping", true);
-            animator.SetBool("FullJump", false);
-        } else {
-            animator.SetBool("Jumping", false);
-        }
     }
 }
