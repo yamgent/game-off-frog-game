@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class StartScreenController : MonoBehaviour {
 
     public Button startButton;
+    public GameObject help;
     public GameObject frog;
     public Vector3[] frogPositions;
     public GameObject bird;
@@ -55,6 +56,7 @@ public class StartScreenController : MonoBehaviour {
     void StartButtonClick() {
         isAnimationStart = true;
         startButton.gameObject.SetActive(false);
+        help.SetActive(false);
         startScreenMusic.StartFadeOut();
     }
 }
