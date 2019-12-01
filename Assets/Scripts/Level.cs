@@ -97,7 +97,7 @@ public class Level : MonoBehaviour
     }
 
     // get the lane number of the lilypad for a particular row
-    private int[] GetRowLilypadLanes(int row) {
+    public int[] GetRowLilypadLanes(int row) {
         List<int> results = new List<int>();
 
         for (int lane = 0; lane < totalLanes; lane++) {
@@ -187,7 +187,7 @@ public class Level : MonoBehaviour
         splitPathRow = baseRow + offset;
         startMergePathRow = splitPathRow + offset;
         splitPathDifficulty++;
-        itemRow = Random.Range(splitPathRow + 1, startMergePathRow);
+        itemRow = Random.Range(splitPathRow + 2, splitPathRow + 6);
     }
 
     // generate new lilypads from startRow to endRow. The startRow - 1
@@ -256,6 +256,13 @@ public class Level : MonoBehaviour
                     ItemManager.ItemType type = ItemManager.ItemType.SpeedUpItem;
                     if (environmentSingleton.GetBiomeAt(row) == Environment.BiomeType.Space) {
                         type = ItemManager.ItemType.SpeedUpItemSpace;
+                    }
+                    // 33% chance of spawning dragonfly.
+                    if (Random.Range(0, 3) == 0) {
+                        type = ItemManager.ItemType.DragonflyItem;
+                        if (environmentSingleton.GetBiomeAt(row) == Environment.BiomeType.Space) {
+                            type = ItemManager.ItemType.DragonflyItemSpace;
+                        }
                     }
                     ItemManager.GetSingleton().CreateItem(
                         type,

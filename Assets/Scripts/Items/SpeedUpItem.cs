@@ -37,7 +37,7 @@ public class SpeedUpItem : MonoBehaviour
         }
     }
 
-    public void spawnAt(int row, int col) {
+    public void SpawnAt(int row, int col) {
         this.row = row;
         this.col = col;
         GetComponent<BoxCollider2D>().enabled = true;
