@@ -79,4 +79,8 @@ public class CameraController : MonoBehaviour {
     public void StartBoostCameraSpeed() {
         isBoost = true;
     }
+
+    public float GetCameraMovementSpeed() {
+        return currentMovement.y;
+    }
 }

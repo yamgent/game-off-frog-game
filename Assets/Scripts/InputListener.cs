@@ -24,12 +24,6 @@ public class InputListener : MonoBehaviour {
             SceneManager.LoadScene(scene.name);
             Tutorial.GetSingleton().ResetTutorial();
         }
-
-        if (Input.GetKeyDown(KeyCode.T)) {
-            Tutorial.GetSingleton().ResetTutorial();
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-        }
     }
 
     private void TryMoveFrog(int rowBy, int colBy) {
